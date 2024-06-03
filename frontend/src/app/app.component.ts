@@ -1,13 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { RicettaService } from "./services/ricettasvc";
 import { Ricetta } from "./models/ricetta";
 import {NgForOf} from "@angular/common";
+import {RouterModule} from "@angular/router";
+import {HomeComponent} from "./home/home.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgForOf],
+  imports: [HomeComponent, CommonModule, RouterOutlet, RouterLink, RouterLinkActive, NgForOf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

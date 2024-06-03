@@ -4,7 +4,6 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { RicettaService } from "./services/ricettasvc";
 import { Ricetta } from "./models/ricetta";
 import {NgForOf} from "@angular/common";
-import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
 
 @Component({

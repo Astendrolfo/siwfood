@@ -1,4 +1,4 @@
-package it.uniroma3.siw.siwfood.webconfig;
+package it.uniroma3.siw.siwfood.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

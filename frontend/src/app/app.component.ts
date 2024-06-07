@@ -18,20 +18,7 @@ export class AppComponent implements OnInit {
   constructor(private serveRicette: RicettaService) { }
 
   title = 'siwfood';
-  ricettaCorrente?: Ricetta;
-  listaRicetteCorrente?: Ricetta[];
 
   ngOnInit(): void {
-    this.serveRicette.getById(1).subscribe({
-      next: data => { this.ricettaCorrente = data; },
-      error: err => { console.log("Errore:", err); },
-      complete: () => { console.log("Richiesta completata."); }
-    });
-
-    this.serveRicette.getListaRicette().subscribe({
-      next: data => { this.listaRicetteCorrente = data; },
-      error: err => { console.log("Errore:", err); },
-      complete: () => { console.log("Richiesta completata."); }
-    });
   }
 }

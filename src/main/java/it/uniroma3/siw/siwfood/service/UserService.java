@@ -1,10 +1,11 @@
 package it.uniroma3.siw.siwfood.service;
 
+import it.uniroma3.siw.siwfood.exceptions.AuthException;
 import it.uniroma3.siw.siwfood.model.User;
 import it.uniroma3.siw.siwfood.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +18,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws
-            UsernameNotFoundException {
-        if (repository.findByEmail(email) != null) {
-            return repository.findByEmail(email);
+    public UserDetails loadUserByUsername(String email) {
+        User user = repository.findByEmail(email);
+        if (user == null) {
+            throw new AuthException("Utente non trovato con l'email: " + email, HttpStatus.NOT_FOUND);
         }
-        throw new UsernameNotFoundException("No user with email :" + email);
+        return user;
     }
 }

@@ -4,7 +4,7 @@ import it.uniroma3.siw.siwfood.exceptions.AuthException;
 import it.uniroma3.siw.siwfood.model.User;
 import it.uniroma3.siw.siwfood.repository.UserRepository;
 import it.uniroma3.siw.siwfood.response.LoginResponse;
-import it.uniroma3.siw.siwfood.service.JwtUtil;
+import it.uniroma3.siw.siwfood.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +20,10 @@ public class LoginController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtUtil;
 
     @Autowired
-    public LoginController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public LoginController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -44,12 +44,14 @@ public class LoginController {
                 /* Caso in cui l'utente esiste e la password e' corretta */
 
                 Map<String, Object> claims = new HashMap<>();
-                claims.put("ruolo", user.getRoleList());
+                claims.put("ruoli", user.getRoleList());
 
-                /* Chiamata al generatore JWT (durata 1h) */
+                /*
+                Generazione del JWT <--> Chiamo il Builder e gli passo dei claims custom (username)
+                 */
 
-                String token = jwtUtil.generateTokenWithBearer(username, claims, 1000 * 60 * 60);
-                return new LoginResponse(token, "Autenticazione completata con successo.", true);
+                String token = jwtUtil.generateToken(claims, user);
+                return new LoginResponse(token, "Autenticazione completata con successo.", true, user.getRoleList());
             } else throw new AuthException("Le credenziali inserite sono errate.", HttpStatus.BAD_REQUEST);
         }
 

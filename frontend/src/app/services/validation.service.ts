@@ -5,7 +5,7 @@ import axios from 'axios';
   providedIn: 'root'
 })
 
-export class LoginService {
+export class ValidationService {
   constructor() {}
 
   getAuthToken(): string | null {

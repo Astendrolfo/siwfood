@@ -9,12 +9,14 @@ public class LoginResponse {
     private String message;
     private List<Role> roles;
     private boolean success;
+    private String username;
 
-    public LoginResponse(String token, String message, boolean success, List<Role> roles) {
+    public LoginResponse(String token, String message, boolean success, List<Role> roles, String username) {
         this.token = token;
         this.message = message;
         this.success = success;
         this.roles = roles;
+        this.username = username;
     }
 
     public String getToken() {
@@ -47,6 +49,14 @@ public class LoginResponse {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
 

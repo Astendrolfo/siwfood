@@ -1,14 +1,19 @@
-:root {
-  --input-padding-x: .75rem;
-  --input-padding-y: .75rem;
-}
-
 html,
 body {
   height: 100%;
 }
 
+.navbar-container {
+  position: fixed; /* Posizione fissa rispetto alla finestra del browser */
+  top: 0; /* Posiziona la navbar in alto */
+  left: 0; /* Posiziona la navbar a sinistra */
+  width: 100%; /* Occupa l'intera larghezza della finestra del browser */
+  z-index: 1000; /* Assicura che la navbar sia sopra gli altri contenuti */
+}
+
 body {
+  --input-padding-x: .75rem;
+  --input-padding-y: .75rem;
   display: -ms-flexbox;
   display: -webkit-box;
   display: flex;

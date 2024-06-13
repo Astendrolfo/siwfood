@@ -51,7 +51,7 @@ public class LoginController {
                  */
 
                 String token = jwtUtil.generateToken(claims, user);
-                return new LoginResponse(token, "Autenticazione completata con successo.", true, user.getRoleList());
+                return new LoginResponse(token, "Autenticazione completata con successo.", true, user.getRoleList(), user.getFirstname());
             } else throw new AuthException("Le credenziali inserite sono errate.", HttpStatus.BAD_REQUEST);
         }
 

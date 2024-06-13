@@ -7,5 +7,5 @@ import {outgoingTokenInterceptorInterceptor} from "./outgoing-token-interceptor.
 
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routeConfig), provideAnimationsAsync(), provideHttpClient(withInterceptors([outgoingTokenInterceptorInterceptor])),]
+  providers: [provideRouter(routeConfig), provideAnimationsAsync(), provideHttpClient(withInterceptors([outgoingTokenInterceptorInterceptor]))]
 };

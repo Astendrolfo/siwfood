@@ -6,11 +6,11 @@ import {canActivate} from "./services/auth.guard";
 import {ProfileComponent} from "./profile/profile.component";
 
 const routeConfig: Routes = [
-  { path: 'login', component: LoginComponent},
+  { path: 'login', component: LoginComponent, canActivate: [canActivate]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent},
-  { path: 'register', component: RegisterComponent},
-  { path: 'profile', component: ProfileComponent}
+  { path: 'home', component: HomeComponent, canActivate: [canActivate]},
+  { path: 'register', component: RegisterComponent, canActivate: [canActivate]},
+  { path: 'profile', component: ProfileComponent, canActivate: [canActivate]}
 ];
 
 export default routeConfig;

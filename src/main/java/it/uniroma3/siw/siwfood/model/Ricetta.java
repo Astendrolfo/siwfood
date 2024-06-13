@@ -1,17 +1,27 @@
 package it.uniroma3.siw.siwfood.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@EnableAutoConfiguration
 @Entity
+@Table(name = "ricette")
 public class Ricetta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String title;
+    private Long id; //identificatore
+    private String title; //titolo della ricetta
+
+    @ManyToOne
+    @JoinColumn (name = "id_autore")
+    private User author;
+
+    @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ingrediente> listaIngredienti = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -26,6 +36,14 @@ public class Ricetta {
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<Ingrediente> getIngredients() {
+        return listaIngredienti;
+    }
+
+    public void setIngredients(List<Ingrediente> ingredients) {
+        this.listaIngredienti = ingredients;
     }
 
     /*@Override

@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { LoginService } from '../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import {NavbarComponent} from "../../navbar/navbar.component";
+import {AuthService} from "../../services/authservice";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule
+    CommonModule,
+    NavbarComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent {
+export class LoginComponent{
   username: string = '';
   password: string = '';
   message: string = '';
@@ -23,7 +26,7 @@ export class LoginComponent {
   requested: boolean = false;
   errorMessage: string = '';
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService, private router: Router, private authService : AuthService) { }
 
   login() {
     this.loginService.login(this.username, this.password).subscribe(
@@ -33,6 +36,7 @@ export class LoginComponent {
         this.requested = true;
         if (this.success) {
           localStorage.setItem('token', response.token);
+          localStorage.setItem('username', response.username);
           setTimeout(() => {
             this.router.navigate(['/']).then(r => this.success && this.requested);
           }, 2000);

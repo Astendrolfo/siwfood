@@ -6,11 +6,16 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class authService {
 
   private loginUrl = 'http://localhost:8080/login';
 
   constructor(private http: HttpClient) { }
+
+  public isAuthenticated(): boolean {
+    const authToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    return (authToken !== null);
+  }
 
   login(username: string, password: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

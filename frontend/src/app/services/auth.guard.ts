@@ -1,20 +1,21 @@
-import {inject} from "@angular/core";
-import {CanActivateFn, Router} from "@angular/router";
+import { CanActivateFn, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
 
-export const authGuard: (protectedRoutes: string[]) => CanActivateFn = (protectedRoutes: string[]) => {
-  return () => {
-    const router = inject(Router);
-    const currentRoute = router.url;
-    console.log(currentRoute);
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
-    if (token) return true; // Ho un token, accedo alla pagina e verifico il token.
-    else if (protectedRoutes.includes(currentRoute)) {
-        router.navigateByUrl("/login").then();
-      }
-    console.log(router.url)
-    return false;
-
-  };
+@Injectable({ providedIn: 'root' })
+class PermissionsService {
+  isLoggedIn(): boolean {
+    const authToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    return (authToken !== null);
+  }
 }
-const protectedRoutes: string[] = ['/home', '/profile'];
-export const canActivate = authGuard(protectedRoutes);
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const permissionsService = inject(PermissionsService);
+  const router = inject(Router);
+
+  if (!permissionsService.isLoggedIn()) {
+    router.navigate(['/login']);
+    return false;
+  }
+  return true;
+};

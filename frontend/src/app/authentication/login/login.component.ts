@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { LoginService } from '../../services/login.service';
+import { authService } from '../../services/authService';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {NavbarComponent} from "../../navbar/navbar.component";
-import {AuthService} from "../../services/authservice";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,8 @@ import {AuthService} from "../../services/authservice";
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent{
+export class LoginComponent implements OnInit{
+  isAuthenticated: boolean = false;
   username: string = '';
   password: string = '';
   message: string = '';
@@ -26,10 +26,16 @@ export class LoginComponent{
   requested: boolean = false;
   errorMessage: string = '';
 
-  constructor(private loginService: LoginService, private router: Router, private authService : AuthService) { }
+  constructor(private authService: authService, private router: Router) {}
+
+  ngOnInit(): void {
+        this.isAuthenticated = this.authService.isAuthenticated();
+        if (this.isAuthenticated)
+          this.router.navigate(['/profile']).then();
+    }
 
   login() {
-    this.loginService.login(this.username, this.password).subscribe(
+    this.authService.login(this.username, this.password).subscribe(
       response => {
         this.message = response.message;
         this.success = response.success;

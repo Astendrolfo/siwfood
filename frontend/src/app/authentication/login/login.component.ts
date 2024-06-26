@@ -4,7 +4,6 @@ import { LoginService } from '../../services/login.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {NavbarComponent} from "../../navbar/navbar.component";
-import {AuthService} from "../../services/authservice";
 
 @Component({
   selector: 'app-login',
@@ -26,7 +25,7 @@ export class LoginComponent{
   requested: boolean = false;
   errorMessage: string = '';
 
-  constructor(private loginService: LoginService, private router: Router, private authService : AuthService) { }
+  constructor(private loginService: LoginService, private router: Router) { }
 
   login() {
     this.loginService.login(this.username, this.password).subscribe(

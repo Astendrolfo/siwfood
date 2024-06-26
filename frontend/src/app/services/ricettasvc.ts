@@ -1,4 +1,4 @@
-import {Ricetta} from '../models/ricetta'
+import {Ricetta} from '../models/Ricetta'
 import {Injectable, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import { HttpClient } from '@angular/common/http';

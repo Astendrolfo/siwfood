@@ -11,19 +11,21 @@ export const authGuard: (protectedRoutes: string[]) => CanActivateFn = (protecte
     restituirebbe l'url della componente precedente */
 
     const currentRoute = "/" + route.url.map(segment => segment.path).join();
+    const authenticated = isAuthenticated();
 
-    // Check del token senza andare in errore
-
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-    if (token) {
-      return true;
-    } else if (protectedRoutes.includes(currentRoute)) {
-      router.navigateByUrl("/login");
+    if ((!authenticated) && protectedRoutes.includes(currentRoute) && typeof window !== "undefined") {
+      window.location.replace('/login');
       return false;
     }
     return true;
   };
+
+  function isAuthenticated() : boolean {
+    let token = null;
+    if (typeof window !== "undefined") //scarto finestre che non siano undefined
+      token = localStorage.getItem('token');
+    return !!(token);
+  }
 };
 
 const protectedRoutes: string[] = ['/profile'];

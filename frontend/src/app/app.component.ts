@@ -1,26 +1,29 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterOutlet, RouterLink, RouterLinkActive, Router} from '@angular/router';
-import {NgForOf} from "@angular/common";
+import {RouterOutlet, RouterLink, RouterLinkActive} from '@angular/router';
+import {NgForOf, NgIf} from "@angular/common";
 import {HomeComponent} from "./home/home.component";
-import {HttpClient} from "@angular/common/http";
+import { AuthService } from "./services/auth.service";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HomeComponent, CommonModule, RouterOutlet, RouterLink, RouterLinkActive, NgForOf],
+  imports: [HomeComponent, CommonModule, RouterOutlet, RouterLink, RouterLinkActive, NgForOf, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 export class AppComponent implements OnInit {
-  isAuthenticated: boolean = false;
-  username = '';
-
   title = 'siwfood';
+  username: string | null = '';
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(protected authService: AuthService) {};
 
   ngOnInit(): void {
+    this.username = this.authService.getUsername();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

@@ -26,17 +26,20 @@ export class AuthService {
       );
   }
 
-  logout() {
-    // Simulazione di un processo di logout (rimozione del token, azzeramento delle variabili, ecc.)
+  logout(): void {
+    localStorage.removeItem('token');
     this.isAuthenticated = false;
-    this.username = null;
   }
 
-  isAuthenticatedUser(): boolean {
-    return this.isAuthenticated;
+  isAuthenticatedUser() : boolean {
+    let token = null;
+    if (typeof window !== "undefined")
+      token = localStorage.getItem('token');
+    return !!(token);
   }
 
   getUsername(): string | null {
+    this.username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
     return this.username;
   }
 }

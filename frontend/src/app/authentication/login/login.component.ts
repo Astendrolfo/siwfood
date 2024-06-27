@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {NavbarComponent} from "../../navbar/navbar.component";
@@ -25,10 +25,10 @@ export class LoginComponent{
   requested: boolean = false;
   errorMessage: string = '';
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   login() {
-    this.loginService.login(this.username, this.password).subscribe(
+    this.authService.login(this.username, this.password).subscribe(
       response => {
         this.message = response.message;
         this.success = response.success;

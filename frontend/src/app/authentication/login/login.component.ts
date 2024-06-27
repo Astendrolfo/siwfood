@@ -3,7 +3,6 @@ import { FormsModule } from "@angular/forms";
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import {NavbarComponent} from "../../navbar/navbar.component";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +10,6 @@ import {NavbarComponent} from "../../navbar/navbar.component";
   imports: [
     FormsModule,
     CommonModule,
-    NavbarComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

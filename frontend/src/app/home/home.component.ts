@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {HttpClient, HttpRequest} from "@angular/common/http";
-import {NavbarComponent} from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-home',
@@ -10,8 +9,7 @@ import {NavbarComponent} from "../navbar/navbar.component";
   imports: [
     NgIf,
     RouterLink,
-    RouterOutlet,
-    NavbarComponent
+    RouterOutlet
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

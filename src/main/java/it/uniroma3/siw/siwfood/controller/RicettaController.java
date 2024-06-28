@@ -34,7 +34,7 @@ public class RicettaController {
     }
 
     @PostMapping("/addricettasium")
-    public ResponseEntity<Ricetta> createRicetta(@RequestBody JsonNode requestBody) {
+    public ResponseEntity<RicettaResponse> createRicetta(@RequestBody JsonNode requestBody) {
         System.out.println("Aggiungo una nuova ricetta");
         try {
             Ricetta savedRicetta = new Ricetta();
@@ -72,10 +72,11 @@ public class RicettaController {
             savedRicetta.setListaIngredienti(listaIngredienti);
             savedRicetta.setDescription(description);
             savedRicetta.setAuthor(autore);
-
             ricettaService.saveRicetta(savedRicetta);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedRicetta);
+            RicettaResponse response = new RicettaResponse(savedRicetta);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             // Log dell'errore
             e.printStackTrace();

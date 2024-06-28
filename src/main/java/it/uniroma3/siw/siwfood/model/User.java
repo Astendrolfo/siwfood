@@ -92,6 +92,7 @@ public class User implements UserDetails {
         return authorityList;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -116,7 +117,7 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER)
     List<Role> roleList;
 
-    public void setRoleList(Role role) {
+    public void addRole(Role role) {
         this.roleList.add(role);
     }
 

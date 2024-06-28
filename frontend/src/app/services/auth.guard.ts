@@ -14,7 +14,11 @@ export const authGuard: (protectedRoutes: string[]) => CanActivateFn = (protecte
     const authenticated = isAuthenticated();
 
     if ((!authenticated) && protectedRoutes.includes(currentRoute) && typeof window !== "undefined") {
-      window.location.replace('/login');
+      router.navigate(['login']).then();
+      return false;
+    }
+    else if (authenticated && currentRoute == '/login' || authenticated &&currentRoute == '/register') {
+      router.navigate(['home']).then();
       return false;
     }
     return true;

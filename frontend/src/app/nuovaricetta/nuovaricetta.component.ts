@@ -4,6 +4,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "../services/auth.service";
+import {ImageService} from "../services/image.service";
 
 @Component({
   selector: 'app-nuovaricetta',
@@ -26,13 +27,14 @@ export class NuovaricettaComponent {
     title: '',
     immagineUrl: ''
   };
+  idNuovaRicetta: number | null = null;
   charLimitExceeded: boolean = false;
   imageUrl: string | ArrayBuffer | null | undefined = null;
   selectedFile: File | null = null;
   formSubmitted: boolean = false;
   success: boolean = false;
 
-  constructor(private http: HttpClient, protected authService: AuthService) {
+  constructor(private http: HttpClient, protected authService: AuthService, private imageService: ImageService) {
   }
 
   limitCharacters(event: Event) {
@@ -70,15 +72,23 @@ export class NuovaricettaComponent {
   submitForm() {
     this.formSubmitted = true;
     if (this.formIsValid()) {
-      const url= 'http://localhost:8080/api/ricette';
+      const url = 'http://localhost:8080/api/ricette/addricettasium';
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       const body = JSON.stringify(this.ricetta);
 
       this.http.post(url, body, { headers })
         .subscribe({
-          next: () => {
+          next: (response: any) => {
             console.log('Dati inviati con successo!');
             this.success = true;
+            this.idNuovaRicetta = response.id;
+            console.log(this.idNuovaRicetta);
+            if (this.selectedFile && this.idNuovaRicetta) {
+              this.imageService.uploadImageForRecipe(this.idNuovaRicetta, this.selectedFile)
+                .subscribe(response => {
+                  console.log('Upload successful', response);
+                });
+            }
           },
           error: (error) => {
             console.error('Errore durante l\'invio dei dati:', error);

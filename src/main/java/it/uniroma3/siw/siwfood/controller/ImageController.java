@@ -73,6 +73,17 @@ public class ImageController {
         }
     }
 
+    @PostMapping("/upload/recipe/{recipeId}")
+    public ResponseEntity<Image> uploadImageForRecipe(@PathVariable Long recipeId,
+                                                    @RequestParam("file") MultipartFile file) {
+        try {
+            Image savedImage = imageService.saveImageForRicetta(file, recipeId);
+            return ResponseEntity.ok(savedImage);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
         imageService.deleteImage(id);

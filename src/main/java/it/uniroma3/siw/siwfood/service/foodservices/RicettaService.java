@@ -14,7 +14,6 @@ public class RicettaService {
     private RicettaRepository ricettaRepository;
 
     public Ricetta saveRicetta(Ricetta ricetta) {
-        System.out.println("Salvo una nuova ricetta.");
         return ricettaRepository.save(ricetta);
     }
 

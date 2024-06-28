@@ -25,4 +25,12 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+
+    public UserDetails loadById(Long id) {
+        User user = repository.findById(id).orElse(null);
+        if (user == null) {
+            throw new AuthException("Utente non trovato con id: " + id, HttpStatus.NOT_FOUND);
+        }
+        return user;
+    }
 }

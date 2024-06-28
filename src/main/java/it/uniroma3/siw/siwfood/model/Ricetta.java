@@ -12,7 +12,8 @@ import java.util.List;
 public class Ricetta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //identificatore
     private String title; //titolo della ricetta
     private String description;

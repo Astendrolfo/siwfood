@@ -1,12 +1,20 @@
 package it.uniroma3.siw.siwfood.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.uniroma3.siw.siwfood.model.Image;
+import it.uniroma3.siw.siwfood.model.Ingrediente;
 import it.uniroma3.siw.siwfood.model.Ricetta;
+import it.uniroma3.siw.siwfood.model.User;
 import it.uniroma3.siw.siwfood.response.RicettaResponse;
+import it.uniroma3.siw.siwfood.service.UserService;
+import it.uniroma3.siw.siwfood.service.foodservices.ImageService;
 import it.uniroma3.siw.siwfood.service.foodservices.RicettaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,24 +22,57 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/ricette")
 public class RicettaController {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final RicettaService ricettaService;
+    private final UserService userService;
+    private final ImageService imageService;
 
-    public RicettaController(RicettaService ricettaService) {
+    public RicettaController(RicettaService ricettaService, UserService userService, ImageService imageService) {
         this.ricettaService = ricettaService;
+        this.userService = userService;
+        this.imageService = imageService;
     }
 
     @PostMapping("/addricettasium")
-    public ResponseEntity<Ricetta> createRicetta(@RequestBody Ricetta ricetta) {
+    public ResponseEntity<Ricetta> createRicetta(@RequestBody JsonNode requestBody) {
         System.out.println("Aggiungo una nuova ricetta");
         try {
             Ricetta savedRicetta = new Ricetta();
-            savedRicetta.setTitle(ricetta.getTitle());
-            savedRicetta.setAuthor(ricetta.getAuthor());
-            savedRicetta.setImage(ricetta.getImage());
-            savedRicetta.setListaIngredienti(ricetta.getListaIngredienti());
-            savedRicetta.setDescription(ricetta.getDescription());
+            String title = requestBody.get("title").asText();
+            String description = requestBody.get("description").asText();
+            Long userId = requestBody.get("authorId").asLong();
 
-            // Salva la ricetta nel database usando il servizio ricettaService
+
+            User autore = (User)userService.loadById(userId);
+
+            if (autore == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Gestione della lista degli ingredienti
+            List<Ingrediente> listaIngredienti = new ArrayList<>();
+            JsonNode ingredientiNode = requestBody.get("listaIngredienti");
+            if (ingredientiNode != null && ingredientiNode.isArray()) {
+                for (final JsonNode ingredientNode : ingredientiNode) {
+                    Ingrediente ingrediente = objectMapper.treeToValue(ingredientNode, Ingrediente.class);
+                    ingrediente.setRicetta(savedRicetta);
+                    listaIngredienti.add(ingrediente);
+                }
+            } else {
+                // Se listaIngredienti non è presente o non è un array, la lista degli ingredienti sarà vuota
+                System.out.println("Nessun ingrediente fornito nel JSON.");
+                // Puoi scegliere di aggiungere un messaggio di log o altre azioni appropriate
+            }
+
+
+            /*
+            Inizializzazione effettiva dei parametri della ricetta
+             */
+            savedRicetta.setTitle(title);
+            savedRicetta.setListaIngredienti(listaIngredienti);
+            savedRicetta.setDescription(description);
+            savedRicetta.setAuthor(autore);
+
             ricettaService.saveRicetta(savedRicetta);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(savedRicetta);

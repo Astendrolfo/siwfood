@@ -6,6 +6,7 @@ import it.uniroma3.siw.siwfood.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ public class UserService implements UserDetailsService {
 
     public UserService(UserRepository repository) {
         this.repository = repository;
+
     }
 
     @Override
@@ -32,5 +34,9 @@ public class UserService implements UserDetailsService {
             throw new AuthException("Utente non trovato con id: " + id, HttpStatus.NOT_FOUND);
         }
         return user;
+    }
+
+    public void registerUser(User user) {
+        repository.save(user);
     }
 }

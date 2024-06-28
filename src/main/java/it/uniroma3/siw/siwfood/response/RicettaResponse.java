@@ -18,7 +18,7 @@ public class RicettaResponse {
         this.title = ricetta.getTitle();
         this.description = ricetta.getDescription();
         this.authorId = ricetta.getAuthor().getId();
-        this.authorName = ricetta.getAuthor().getFirstname();
+        this.authorName = ricetta.getAuthor().getNome();
         this.listaIngredienti = ricetta.getListaIngredienti();
         this.immagine = (ricetta.getImage() != null) ? ricetta.getImage().getData() : new byte[0];
     }

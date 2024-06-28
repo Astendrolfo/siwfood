@@ -20,11 +20,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "firstname")
-    String firstname;
+    @Column(name = "nome")
+    String nome;
 
-    @Column(name= "lastname")
-    String lastname;
+    @Column(name= "cognome")
+    String cognome;
+
+    @Column(name = "datadinascita")
+    String dob;
 
     @Column(name = "email")
     String email;
@@ -34,22 +37,6 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Image image;
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
 
     public Long getId() {
         return id;
@@ -129,5 +116,39 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER)
     List<Role> roleList;
 
+    public void setRoleList(Role role) {
+        this.roleList.add(role);
+    }
 
+    public void setRoleList(List<Role> roleList, List<GrantedAuthority> authorities) {
+        this.roleList = roleList;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setImage(String image) {
+        this.image = new Image();
+    }
 }

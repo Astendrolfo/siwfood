@@ -1,4 +1,4 @@
-import {RicettaModel} from '../models/ricetta.model'
+import {Ricetta} from '../models/ricetta.model'
 import {Injectable, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -13,11 +13,11 @@ import {Ricette} from "../endpoints";
 export class RicettaService{
   constructor(private http: HttpClient) { }
 
-  public getById(id: number): Observable<RicettaModel> {
-    return this.http.get<RicettaModel>(Ricette.getById + '/' + id);
+  public getById(id: number): Observable<Ricetta> {
+    return this.http.get<Ricetta>(Ricette.getById + '/' + id);
   }
 
-  public getListaRicette() : Observable<RicettaModel[]> {
-    return this.http.get<RicettaModel[]>(Ricette.getList);
+  public getListaRicette() : Observable<Ricetta[]> {
+    return this.http.get<Ricetta[]>(Ricette.getList);
   }
 }

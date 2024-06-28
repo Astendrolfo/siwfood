@@ -1,32 +1,44 @@
 package it.uniroma3.siw.siwfood.controller;
 
 import it.uniroma3.siw.siwfood.exceptions.AuthException;
+import it.uniroma3.siw.siwfood.model.Role;
 import it.uniroma3.siw.siwfood.model.User;
 import it.uniroma3.siw.siwfood.repository.UserRepository;
 import it.uniroma3.siw.siwfood.response.LoginResponse;
 import it.uniroma3.siw.siwfood.service.JwtService;
+import it.uniroma3.siw.siwfood.service.RoleService;
+import it.uniroma3.siw.siwfood.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
-public class LoginController {
+@RequestMapping("/api")
+public class AuthController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtUtil;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public LoginController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtUtil) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtUtil, UserService userService, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.userService = userService;
+        this.roleService = roleService;
     }
 
     @PostMapping("/login")
@@ -51,11 +63,31 @@ public class LoginController {
                  */
 
                 String token = jwtUtil.generateToken(claims, user);
-                return new LoginResponse(token, "Autenticazione completata con successo.", true, user.getRoleList(), user.getFirstname(), user.getId());
+                return new LoginResponse(token, "Autenticazione completata con successo.", true, user.getRoleList(), user.getNome(), user.getId());
             } else throw new AuthException("Le credenziali inserite sono errate.", HttpStatus.BAD_REQUEST);
         }
 
         throw new AuthException("Le credenziali inserite sono errate.", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/register")
+    public String register(@RequestBody RegisterRequest registerRequest) {
+        try {
+
+            User user = new User();
+            user.setEmail(registerRequest.getEmail());
+            user.setNome(registerRequest.getNome());
+            user.setCognome(registerRequest.getCognome());
+            user.setDob(registerRequest.getDob());
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            List<Role> roles = new ArrayList<>();
+            roles.add(roleService.getRoleById(1L));
+            user.setRoleList(roles);
+            userService.registerUser(user);
+            return "Utente registrato correttamente.";
+        } catch (Exception e) {
+            return "Errore nella registrazione.";
+        }
     }
 }
 

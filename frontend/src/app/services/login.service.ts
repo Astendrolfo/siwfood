@@ -8,7 +8,8 @@ import { map } from 'rxjs/operators';
 })
 export class LoginService {
 
-  private loginUrl = 'http://localhost:8080/login';
+  private loginUrl = 'http://localhost:8080/api/login';
+  private registerUrl = 'http://localhost:8080/api/register';
 
   constructor(private http: HttpClient) { }
 

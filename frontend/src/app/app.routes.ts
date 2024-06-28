@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './authentication/login/login.component';
 import {HomeComponent} from "./home/home.component";
-import {RegisterComponent} from "./authentication/register/register.component";
+import {RegisterComponent} from "./register/register.component";
 import {canActivate} from "./services/auth.guard";
 import {ProfileComponent} from "./profile/profile.component";
 import {ImageViewComponent} from "./imageviewer/imageviewer.component";
@@ -19,6 +19,7 @@ const routeConfig: Routes = [
   { path: 'imageu', component: ImageuploaderComponent, canActivate: [canActivate]},
   { path: 'ricette', component: RicetteComponent, canActivate: [canActivate]},
   { path: 'ricette/nuovaricetta', component: NuovaricettaComponent, canActivate: [canActivate]},
+  { path: 'register', component: RegisterComponent, canActivate: [canActivate]},
 ];
 
 export default routeConfig;

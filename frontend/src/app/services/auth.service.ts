@@ -11,7 +11,7 @@ export class AuthService {
   private isAuthenticated: boolean = false;
   private username: string | null = null;
   private userId: number | null = null;
-  private loginUrl = 'http://localhost:8080/login';
+  private loginUrl = 'http://localhost:8080/api/login';
 
   constructor(private http: HttpClient) { }
 

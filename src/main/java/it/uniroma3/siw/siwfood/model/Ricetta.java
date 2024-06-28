@@ -23,6 +23,9 @@ public class Ricetta {
     @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingrediente> listaIngredienti = new ArrayList<>();
 
+    @OneToOne(mappedBy = "ricetta", cascade = CascadeType.ALL)
+    private Image image;
+
     public Long getId() {
         return id;
     }
@@ -34,16 +37,37 @@ public class Ricetta {
     public String getTitle() {
         return title;
     }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public List<Ingrediente> getIngredients() {
+    public List<Ingrediente> getListaIngredienti() {
         return listaIngredienti;
     }
 
-    public void setIngredients(List<Ingrediente> ingredients) {
-        this.listaIngredienti = ingredients;
+    public void setListaIngredienti(List<Ingrediente> listaIngredienti) {
+        this.listaIngredienti = listaIngredienti;
+    }
+
+    public void  addIngrediente(Ingrediente ingrediente){
+        this.listaIngredienti.add(ingrediente);
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     /*@Override

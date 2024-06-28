@@ -32,6 +32,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Image image;
+
     public String getFirstname() {
         return firstname;
     }
@@ -58,6 +61,14 @@ public class User implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     @Override

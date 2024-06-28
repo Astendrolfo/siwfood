@@ -76,4 +76,9 @@ form {
   flex-direction: column;
 }
 
+.form-image {
+  width: 500px;
+  height: auto;
+}
+
 .space { margin:0; padding:0; height:10px; }

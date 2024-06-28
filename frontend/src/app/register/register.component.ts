@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgClass, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {ImageService} from "../services/image.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-register',
@@ -14,7 +16,7 @@ import {HttpClient} from "@angular/common/http";
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   name: string = '';
   surname: string = '';
   dob: string = '';
@@ -22,8 +24,9 @@ export class RegisterComponent {
   password: string = '';
   confirmPassword: string = '';
   emailValid: boolean = true;
+  imageUrl: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private imageService: ImageService, private sanitizer: DomSanitizer) {}
 
   passwordsMatch(): boolean {
     return this.password === this.confirmPassword;
@@ -57,5 +60,13 @@ export class RegisterComponent {
     } else {
       console.log('Form non valido, le password non combaciano o l\'email non è valida.');
     }
+  }
+
+  ngOnInit(): void {
+    const imageId = 1; // Cambia l'ID secondo le tue esigenze
+    this.imageService.getImageById(imageId).subscribe(response => {
+      const objectURL = URL.createObjectURL(response);
+      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    });
   }
 }

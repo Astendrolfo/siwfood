@@ -4,6 +4,7 @@
     <div class="card-body">
       <h5 class="card-title text-center mb-4">Registrati a SiwFood</h5>
       <form>
+        <!-- Nome -->
         <div class="form-group row align-items-center">
           <div class="icon-container">
             <i class="bi bi-person-fill"></i>
@@ -12,6 +13,7 @@
             <input type="text" class="form-control" id="exampleInputName" name="name" placeholder="Nome" [(ngModel)]="name" required>
           </div>
         </div>
+        <!-- Cognome -->
         <div class="form-group row align-items-center">
           <div class="icon-container">
           </div>
@@ -19,6 +21,7 @@
             <input type="text" class="form-control" id="exampleInputSurname" name="surname" placeholder="Cognome" [(ngModel)]="surname" required>
           </div>
         </div>
+        <!-- Data di Nascita -->
         <div class="form-group row align-items-center">
           <div class="icon-container">
             <i class="bi bi-calendar-date-fill"></i>
@@ -27,6 +30,7 @@
             <input type="date" class="form-control" id="exampleInputDOB" name="dob" placeholder="Data di Nascita" [(ngModel)]="dob" required>
           </div>
         </div>
+        <!-- Email -->
         <div class="form-group row align-items-center">
           <div class="icon-container">
             <i class="bi bi-envelope-fill"></i>
@@ -35,6 +39,7 @@
             <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Email" [(ngModel)]="email" required>
           </div>
         </div>
+        <!-- Password -->
         <div class="form-group row align-items-center">
           <div class="icon-container">
             <i class="bi bi-lock-fill"></i>
@@ -43,6 +48,7 @@
             <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" [(ngModel)]="password" required>
           </div>
         </div>
+        <!-- Conferma Password -->
         <div class="form-group row align-items-center">
           <div class="icon-container">
           </div>
@@ -50,19 +56,25 @@
             <input type="password" class="form-control" id="exampleInputConfirmPassword" name="confirmPassword" placeholder="Conferma Password" [(ngModel)]="confirmPassword" required>
           </div>
         </div>
+        <!-- Bottone Registrati -->
         <button type="button" class="btn btn-primary btn-block" (click)="register()">Registrati</button>
         <div class="space"></div>
+        <!-- Messaggio di errore per password non corrispondenti -->
         <div *ngIf="confirmPassword !== '' && !passwordsMatch()" class="alert alert-warning d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': confirmPassword !== '' && !passwordsMatch()}">
           <div>
             <i class="bi bi-exclamation-circle"></i> &nbsp; Le password inserite non corrispondono.
           </div>
         </div>
-        <div *ngIf="!emailValid && (passwordsMatch())"  class="alert alert-warning d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': !emailValid}">
+        <!-- Messaggio di errore per email non valida -->
+        <div *ngIf="!emailValid && passwordsMatch()" class="alert alert-warning d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': !emailValid}">
           <i class="bi bi-exclamation-circle"></i> &nbsp; Inserisci un'email valida.
         </div>
       </form>
     </div>
-    <div class="card-img"></div>
+    <!-- Immagine alla destra del form -->
+    <div class="card-img">
+      <img [src]="imageUrl" *ngIf="imageUrl" class="form-image">
+    </div>
   </div>
 </div>
 </body>

@@ -1,0 +1,25 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.space { margin:0; padding:0; height:10px; }
+
+.image-preview-container {
+  width: 100px; /* larghezza desiderata */
+  height: 250px; /* altezza desiderata */
+  overflow: hidden; /* nasconde il contenuto che eccede le dimensioni del container */
+}
+
+.image-preview-container img {
+  width: 100%; /* l'immagine occupa tutta la larghezza del container */
+  height: auto; /* altezza automatica, mantiene l'aspect ratio */
+  display: block; /* assicura che l'immagine non venga visualizzata come inline */
+}

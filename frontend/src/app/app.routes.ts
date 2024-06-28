@@ -6,6 +6,8 @@ import {canActivate} from "./services/auth.guard";
 import {ProfileComponent} from "./profile/profile.component";
 import {ImageViewComponent} from "./imageviewer/imageviewer.component";
 import {ImageuploaderComponent} from "./imageuploader/imageuploader.component";
+import {RicetteComponent} from "./ricette/ricette.component";
+import {NuovaricettaComponent} from "./nuovaricetta/nuovaricetta.component";
 
 const routeConfig: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [canActivate]},
@@ -15,6 +17,8 @@ const routeConfig: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [canActivate]},
   { path: 'imagev', component: ImageViewComponent, canActivate: [canActivate]},
   { path: 'imageu', component: ImageuploaderComponent, canActivate: [canActivate]},
+  { path: 'ricette', component: RicetteComponent, canActivate: [canActivate]},
+  { path: 'ricette/nuovaricetta', component: NuovaricettaComponent, canActivate: [canActivate]},
 ];
 
 export default routeConfig;

@@ -70,7 +70,7 @@ public class ImageService {
 
             return imageRepository.save(image);
         } else {
-            throw new RuntimeException("Ricetta not found");
+            throw new RuntimeException("RicettaModel not found");
         }
     }
 

@@ -17,7 +17,7 @@ public class Image {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    // Uno a uno con Ricetta
+    // Uno a uno con RicettaModel
     @OneToOne
     @JoinColumn(name = "ricetta_id", unique = true)
     private Ricetta ricetta;

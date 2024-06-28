@@ -1,0 +1,85 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  width: calc(50% - 20px);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #ed9233;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 20px;
+}
+
+.card-author {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.card-image {
+  max-width: 500px;
+  max-height: 250px;
+  width: auto;
+  height: auto;
+}
+
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra gli elementi lungo l'asse orizzontale */
+  justify-content: center; /* Centra gli elementi lungo l'asse verticale */
+}
+
+.btn-view-recipe {
+  margin-top: 10px; /* Aggiunge margine sopra il pulsante */
+  /* Altri stili per il pulsante */
+}
+
+.space { margin:0; padding:0; height:50px; }

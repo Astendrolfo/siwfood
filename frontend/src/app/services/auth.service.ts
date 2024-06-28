@@ -10,6 +10,7 @@ import {map} from "rxjs/operators";
 export class AuthService {
   private isAuthenticated: boolean = false;
   private username: string | null = null;
+  private userId: number | null = null;
   private loginUrl = 'http://localhost:8080/login';
 
   constructor(private http: HttpClient) { }
@@ -42,4 +43,16 @@ export class AuthService {
     this.username = typeof window !== 'undefined' ? localStorage.getItem('username') : null
     return this.username;
   }
+
+  getUserId(): number | null {
+    if (typeof window !== 'undefined') {
+      const userIdStr = localStorage.getItem('userId');
+      this.userId = userIdStr ? +userIdStr : null; //casto a numero
+    } else {
+      this.userId = null;
+    }
+    return this.userId;
+  }
+
+
 }

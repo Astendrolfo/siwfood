@@ -1,0 +1,73 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <i class="bi bi-check-lg"></i> Aggiungi una nuova ricetta
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="titolo" >Titolo</label>
+        <div class="space"></div>
+        <input type="text" class="form-control" id="titolo" placeholder="Inserisci il titolo della tua ricetta" [(ngModel)]="ricetta.title" required>
+        <div class="space"></div>
+
+        <label for="descrizione">Breve descrizione</label>
+        <div class="space"></div>
+        <textarea class="form-control" id="descrizione" placeholder="Inserisci una breve descrizione della tua ricetta" [(ngModel)]="ricetta.description" (input)="limitCharacters($event)" required></textarea>
+        <div class="space"></div>
+        <div *ngIf="charLimitExceeded" class="alert alert-warning">
+          <i class="bi bi-exclamation-triangle"></i> La descrizione non può superare i 100 caratteri.
+        </div>
+        <div class="space"></div>
+        <label for="immagine">Carica immagine</label>
+        <div class="space"></div>
+        <input type="file" class="form-control" id="immagine" (change)="onImageSelected($event)">
+        <div class="space mb-3"></div>
+        <div class="image-preview-container" *ngIf="imageUrl">
+          <img [src]="imageUrl" alt="Anteprima Immagine" class="img-thumbnail">
+        </div>
+
+        <!-- Lista dinamica degli ingredienti -->
+        <div *ngFor="let ingrediente of ricetta.listaIngredienti; let i = index">
+          <div class="row mb-3">
+            <div class="col">
+              <input type="text" class="form-control" [(ngModel)]="ingrediente.nome" placeholder="Nome dell'ingrediente" required>
+            </div>
+            <div class="col">
+              <div class="input-group">
+                <input type="number" class="form-control" [(ngModel)]="ingrediente.quantita" placeholder="Quantità" min="0" required>
+                <select class="form-control bg-light" [(ngModel)]="ingrediente.tipoQuantita">
+                  <option value="grammi">Grammi</option>
+                  <option value="chilogrammi">Chilogrammi</option>
+                  <option value="litri">Litri</option>
+                  <option value="millilitri">Millilitri</option>
+                  <option value="cucchiai">Cucchiai</option>
+                  <option value="empty"></option>
+                </select>
+              </div>
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-danger" (click)="rimuoviIngrediente(i)">Rimuovi</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pulsante per aggiungere un nuovo ingrediente -->
+        <div class="mb-3">
+          <button type="button" class="btn btn-primary" (click)="aggiungiIngrediente()">Aggiungi Ingrediente</button>
+        </div>
+        <button class="btn btn-success" (click)="submitForm()">Salva Ricetta</button>
+        </div>
+
+      <div class="space"></div>
+      <div class="alert alert-danger" role="alert" *ngIf="!formIsValid() && formSubmitted">
+        <i class="bi bi-exclamation-triangle"></i> Per favore, compila tutti i campi prima di salvare la ricetta.
+      </div>
+
+      <div class="alert alert-success" role="alert" *ngIf="success">
+        <i class="bi bi-check-circle"></i> La ricetta è stata salvata con successo.
+      </div>
+
+      <div class="space"></div>
+      </div>
+  </div>
+</div>

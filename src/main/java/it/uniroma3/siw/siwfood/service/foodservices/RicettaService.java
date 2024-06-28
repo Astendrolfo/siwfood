@@ -14,11 +14,14 @@ public class RicettaService {
     private RicettaRepository ricettaRepository;
 
     public Ricetta saveRicetta(Ricetta ricetta) {
+        System.out.println("Salvo una nuova ricetta.");
         return ricettaRepository.save(ricetta);
     }
 
     public List<Ricetta> getAllRicette() {
-        return (List<Ricetta>) ricettaRepository.findAll();
+        List<Ricetta> ricette = (List<Ricetta>) ricettaRepository.findAll();
+        System.out.println("Numero di ricette trovate: " + ricette.size());
+        return ricette;
     }
 
     public Ricetta getRicettaById(Long id) {

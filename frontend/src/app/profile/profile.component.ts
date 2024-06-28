@@ -12,5 +12,13 @@ export class ProfileComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    const url = 'http://localhost:8080/users/me';
+    this.http.get<any>(url).subscribe(
+      response => {
+      },
+      error => {
+        console.error('Errore:', error);
+      }
+    );
   }
 }

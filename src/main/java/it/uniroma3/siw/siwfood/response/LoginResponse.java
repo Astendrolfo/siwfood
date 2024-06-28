@@ -10,13 +10,15 @@ public class LoginResponse {
     private List<Role> roles;
     private boolean success;
     private String username;
+    private Long userId;
 
-    public LoginResponse(String token, String message, boolean success, List<Role> roles, String username) {
+    public LoginResponse(String token, String message, boolean success, List<Role> roles, String username, Long userId) {
         this.token = token;
         this.message = message;
         this.success = success;
         this.roles = roles;
         this.username = username;
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -57,6 +59,14 @@ public class LoginResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
 

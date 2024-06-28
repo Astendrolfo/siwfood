@@ -1,0 +1,29 @@
+<!-- lista-ricette.component.html -->
+
+<div class="container">
+  <div class="space"></div>
+  <h1 figure class="text-center">Ricette di SiwFood</h1>
+  <h5 figure class="text-center">un mondo culinario tutto da scoprire</h5>
+  <div class="space"></div>
+  <div class="card-list">
+    <div class="card" *ngFor="let ricetta of ricette">
+      <div class="card-header">
+        Autore: {{ ricetta.authorName }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ ricetta.title }}</h5>
+        <p class="card-text">{{ ricetta.description }}</p>
+
+        <!-- Immagine della ricetta -->
+        <div class="image-container">
+          <img *ngIf="ricetta.immagine && ricetta.immagine.trim().length > 0"
+               [src]="ricetta.immagineUrl"
+               alt="Immagine della ricetta"
+               class="card-image">
+          <a href="/ricette/{{ricetta.id}}" class="btn btn-primary btn-view-recipe">Vedi ricetta</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

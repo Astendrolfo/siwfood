@@ -15,6 +15,7 @@ public class Ricetta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; //identificatore
     private String title; //titolo della ricetta
+    private String description;
 
     @ManyToOne
     @JoinColumn (name = "id_autore")
@@ -68,6 +69,14 @@ public class Ricetta {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /*@Override

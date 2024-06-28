@@ -1,33 +1,56 @@
 package it.uniroma3.siw.siwfood.controller;
 
 import it.uniroma3.siw.siwfood.model.Ricetta;
+import it.uniroma3.siw.siwfood.response.RicettaResponse;
 import it.uniroma3.siw.siwfood.service.foodservices.RicettaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/ricette")
 public class RicettaController {
 
-    @Autowired
-    private RicettaService ricettaService;
+    private final RicettaService ricettaService;
 
-    // Endpoint per creare una nuova ricetta
-    @PostMapping
-    public ResponseEntity<Ricetta> createRicetta(@RequestBody Ricetta ricetta) {
-        Ricetta savedRicetta = ricettaService.saveRicetta(ricetta);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedRicetta);
+    public RicettaController(RicettaService ricettaService) {
+        this.ricettaService = ricettaService;
     }
+
+    @PostMapping("/addricettasium")
+    public ResponseEntity<Ricetta> createRicetta(@RequestBody Ricetta ricetta) {
+        System.out.println("Aggiungo una nuova ricetta");
+        try {
+            Ricetta savedRicetta = new Ricetta();
+            savedRicetta.setTitle(ricetta.getTitle());
+            savedRicetta.setAuthor(ricetta.getAuthor());
+            savedRicetta.setImage(ricetta.getImage());
+            savedRicetta.setListaIngredienti(ricetta.getListaIngredienti());
+            savedRicetta.setDescription(ricetta.getDescription());
+
+            // Salva la ricetta nel database usando il servizio ricettaService
+            ricettaService.saveRicetta(savedRicetta);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedRicetta);
+        } catch (Exception e) {
+            // Log dell'errore
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     // Endpoint per ottenere tutte le ricette
     @GetMapping
-    public ResponseEntity<List<Ricetta>> getAllRicette() {
+    public ResponseEntity<List<RicettaResponse>> getAllRicette() {
         List<Ricetta> ricette = ricettaService.getAllRicette();
-        return ResponseEntity.ok(ricette);
+        List<RicettaResponse> ricetteResponse = ricette.stream()
+                .map(RicettaResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(ricetteResponse);
     }
 
     // Endpoint per ottenere una ricetta per ID

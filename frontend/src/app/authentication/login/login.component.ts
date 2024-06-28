@@ -34,6 +34,7 @@ export class LoginComponent{
         if (this.success) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('username', response.username);
+          localStorage.setItem('userId', response.userId);
           setTimeout(() => {
             this.router.navigate(['/']).then(r => this.success && this.requested);
           }, 2000);

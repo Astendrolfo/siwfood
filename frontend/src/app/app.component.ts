@@ -16,11 +16,13 @@ import { AuthService } from "./services/auth.service";
 export class AppComponent implements OnInit {
   title = 'siwfood';
   username: string | null = '';
+  userId: number | null = null;
 
   constructor(protected authService: AuthService) {};
 
   ngOnInit(): void {
     this.username = this.authService.getUsername();
+    this.userId = this.authService.getUserId();
   }
 
   logout() {

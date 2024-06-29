@@ -22,7 +22,7 @@ export class ImageService {
   uploadImageForUser(userId: number, file: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);
-    return this.http.post(`${this.apiUrl}/upload/${userId}`, formData);
+    return this.http.post(`${this.apiUrl}/upload/user/${userId}`, formData);
   }
 
   uploadImageForRecipe(recipeId: number, file: File): Observable<any> {

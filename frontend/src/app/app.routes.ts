@@ -12,7 +12,7 @@ import {NuovaricettaComponent} from "./nuovaricetta/nuovaricetta.component";
 const routeConfig: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [canActivate]},
   { path: 'register', component: RegisterComponent, canActivate: [canActivate]},
-  { path: 'profile', component: ProfileComponent, canActivate: [canActivate]},
+  { path: 'myprofile', component: ProfileComponent, canActivate: [canActivate]},
   { path: 'imagev', component: ImageViewComponent, canActivate: [canActivate]},
   { path: 'imageu', component: ImageuploaderComponent, canActivate: [canActivate]},
   { path: '', component: RicetteComponent, canActivate: [canActivate]},

@@ -78,8 +78,7 @@ body {
 }
 
 .btn-view-recipe {
-  margin-top: 10px; /* Aggiunge margine sopra il pulsante */
-  /* Altri stili per il pulsante */
+  margin-top: 10px;
 }
 
 .space { margin:0; padding:0; height:50px; }

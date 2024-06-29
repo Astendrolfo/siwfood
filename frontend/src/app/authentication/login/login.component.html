@@ -1,42 +1,44 @@
-<section class="vh-100" style="background-color: #9A616D;">
+<section class="vh-100" style="background-color: #fff3cf;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-xl-10">
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
             <div class="col-md-6 col-lg-5 d-none d-md-block">
-              <img src="https://res.cloudinary.com/hksqkdlah/image/upload/c_fill,dpr_2.0,f_auto,fl_lossy.progressive.strip_profile,g_faces:auto,h_623,q_auto:low,w_378/v1/2023%20Brand%20Pages/Cook's%20Illustrated/30%20Years/Desktop/Desktop-1.jpg"
-                   alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+              <img [src]="imageUrl" *ngIf="imageUrl" class="form-image" alt="login form"/>
             </div>
             <div class="col-md-6 col-lg-7 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
-
                 <form>
-
                   <div class="d-flex align-items-center mb-3 pb-1">
-                    <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                     <span class="h1 fw-bold mb-0">SiwFood</span>
                   </div>
 
-                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Accedi al tuo account</h5>
-
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="username" name="username" autofocus=""/>
-                    <label class="form-label" for="inputEmail">Indirizzo E-mail</label>
+                  <h5 class="fw-normal">Accedi al tuo account</h5>
+                  <div class="space"></div>
+                  <div class="form-outline">
+                    <label class="form-label" for="inputEmail">
+                      <i class="bi bi-envelope-fill"></i>Indirizzo E-mail
+                    </label>
+                    <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="username" name="email" placeholder="E-mail" autofocus=""/>
                   </div>
-
-                  <div data-mdb-input-init class="form-outline mb-4">
+                  <div class="form-outline">
+                    <label class="form-label" for="inputPassword">
+                      <i class="bi bi-lock-fill"></i>Password
+                    </label>
                     <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="password" name="password" placeholder="Password" required=""/>
-                    <label class="form-label" for="inputPassword" >Password</label>
                   </div>
-
+                  <div class="space"></div>
+                  <div class="form-actions">
+                    <div class="links">
+                      <p class="mb-0" style="color: #393f81;">Non hai un account? <a href="register" style="color: #393f81;">Registrati qui</a></p>
+                    </div>
+                  </div>
+                  <div class="space"></div>
                   <div class="pt-1 mb-4">
                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button" (click)="login()">Accedi</button>
                   </div>
 
-                  <a class="small text-muted" href="#!">Password dimenticata?</a>
-                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Non hai un account? <a href="#!"
-                                                                                            style="color: #393f81;">Registrati qui</a></p>
                 </form>
 
                 <div *ngIf="success && requested"class="alert alert-success d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': success && requested}">

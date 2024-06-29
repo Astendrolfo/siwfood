@@ -3,6 +3,8 @@ import { FormsModule } from "@angular/forms";
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import {ImageService} from "../../services/image.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-login',
@@ -15,15 +17,24 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent{
+export class LoginComponent implements OnInit{
   username: string = '';
   password: string = '';
   message: string = '';
   success: boolean = false;
   requested: boolean = false;
   errorMessage: string = '';
+  imageUrl: any;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private imageService: ImageService, private sanitizer: DomSanitizer) { }
+
+  ngOnInit(): void {
+    const imageId = 1;
+    this.imageService.getImageById(imageId).subscribe(response => {
+      const objectURL = URL.createObjectURL(response);
+      this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    });
+  }
 
   login() {
     this.authService.login(this.username, this.password).subscribe(

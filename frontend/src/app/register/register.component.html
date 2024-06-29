@@ -1,4 +1,5 @@
 <body>
+<section class="vh-100" style="background-color: #fff3cf;">
 <div class="container">
   <div class="card">
     <div class="card-body">
@@ -57,7 +58,7 @@
           </div>
         </div>
         <!-- Bottone Registrati -->
-        <button type="button" class="btn btn-primary btn-block" (click)="register()">Registrati</button>
+        <button type="button" class="btn btn-dark btn-block" (click)="register()">Registrati</button>
         <div class="space"></div>
         <!-- Messaggio di errore per password non corrispondenti -->
         <div *ngIf="confirmPassword !== '' && !passwordsMatch()" class="alert alert-warning d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': confirmPassword !== '' && !passwordsMatch()}">
@@ -77,4 +78,5 @@
     </div>
   </div>
 </div>
+</section>
 </body>

@@ -1,5 +1,5 @@
 <!-- lista-ricette.component.html -->
-
+<section class="vh-100" style="background-color: #fff3cf;">
 <div class="container">
   <div class="space"></div>
   <h1 figure class="text-center">Ricette di SiwFood</h1>
@@ -11,15 +11,14 @@
         Autore: {{ ricetta.authorName }}
       </div>
       <div class="card-body">
-        <h5 class="card-title">{{ ricetta.title }}</h5>
-        <p class="card-text">{{ ricetta.description }}</p>
-
-        <!-- Immagine della ricetta -->
+        <h5 class="card-title text-center">{{ ricetta.title }}</h5>
+        <div class="space"></div>
         <div class="image-container">
           <img *ngIf="ricetta.immagine && ricetta.immagine.trim().length > 0"
                [src]="ricetta.immagineUrl"
                alt="Immagine della ricetta"
                class="card-image">
+          <div class="space"></div>
           <a href="/ricette/{{ricetta.id}}" class="btn btn-primary btn-view-recipe">Vedi ricetta</a>
         </div>
 
@@ -27,3 +26,4 @@
     </div>
   </div>
 </div>
+</section>

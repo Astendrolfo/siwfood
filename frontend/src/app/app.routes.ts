@@ -8,6 +8,8 @@ import {ImageViewComponent} from "./imageviewer/imageviewer.component";
 import {ImageuploaderComponent} from "./imageuploader/imageuploader.component";
 import {RicetteComponent} from "./ricette/ricette.component";
 import {NuovaricettaComponent} from "./nuovaricetta/nuovaricetta.component";
+import {MyrecipesComponent} from "./myrecipes/myrecipes.component";
+import {RicettadetailComponent} from "./ricettadetail/ricettadetail.component";
 
 const routeConfig: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [canActivate]},
@@ -18,6 +20,8 @@ const routeConfig: Routes = [
   { path: '', component: RicetteComponent, canActivate: [canActivate]},
   { path: 'nuovaricetta', component: NuovaricettaComponent, canActivate: [canActivate]},
   { path: 'register', component: RegisterComponent, canActivate: [canActivate]},
+  { path: 'myrecipes', component: MyrecipesComponent, canActivate: [canActivate]},
+  { path: 'ricette/:id', component: RicettadetailComponent, canActivate: [canActivate]},
 ];
 
 export default routeConfig;

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @EnableAutoConfiguration
 @Entity
@@ -29,7 +30,7 @@ public class User implements UserDetails {
     @Column(name = "datadinascita")
     String dob;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     String email;
 
     @Column(name = "password")
@@ -114,7 +115,7 @@ public class User implements UserDetails {
         this.roleList = roleList;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     List<Role> roleList;
 
     public void addRole(Role role) {
@@ -151,5 +152,18 @@ public class User implements UserDetails {
 
     public void setImage(String image) {
         this.image = new Image();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail());
     }
 }

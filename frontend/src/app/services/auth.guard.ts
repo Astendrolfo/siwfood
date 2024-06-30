@@ -32,5 +32,5 @@ export const authGuard: (protectedRoutes: string[]) => CanActivateFn = (protecte
   }
 };
 
-const protectedRoutes: string[] = ['/myprofile', '/nuovaricetta'];
+const protectedRoutes: string[] = ['/myprofile', '/nuovaricetta', '/myrecipes'];
 export const canActivate = authGuard(protectedRoutes);

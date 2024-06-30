@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @EnableAutoConfiguration
 @Entity
@@ -14,19 +16,20 @@ public class Ricetta {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //identificatore
-    private String title; //titolo della ricetta
+    private Long id; // identificatore
+
+    private String title; // titolo della ricetta
     private String description;
 
     @ManyToOne
-    @JoinColumn (name = "id_autore")
+    @JoinColumn(name = "id_autore")
     private User author;
 
     @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ingrediente> listaIngredienti = new ArrayList<>();
 
-    @OneToOne(mappedBy = "ricetta", cascade = CascadeType.ALL)
-    private Image image;
+    @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -60,16 +63,30 @@ public class Ricetta {
         this.listaIngredienti = listaIngredienti;
     }
 
-    public void  addIngrediente(Ingrediente ingrediente){
+    public void addIngrediente(Ingrediente ingrediente) {
         this.listaIngredienti.add(ingrediente);
     }
 
-    public Image getImage() {
-        return image;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void addImage(Image newImage) {
+        this.images.add(newImage);
+    }
+
+
+    public void replaceImage(int index, Image image) {
+        this.images.set(index, image);
+    }
+
+    public void removeImage(Image image) {
+        this.images.remove(image);
+        image.setRicetta(null);
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     public String getDescription() {
@@ -79,20 +96,4 @@ public class Ricetta {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /*@Override
-    public int hashCode() {
-        return Objects.hash(title, year);
-    }*/
-
-    /*@Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Movie other = (Movie) obj;
-        return Objects.equals(title, other.title) && year.equals(other.year);
-    }*/}
+}

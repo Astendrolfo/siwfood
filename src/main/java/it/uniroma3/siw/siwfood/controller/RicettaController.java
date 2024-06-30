@@ -2,16 +2,20 @@ package it.uniroma3.siw.siwfood.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.uniroma3.siw.siwfood.model.Image;
 import it.uniroma3.siw.siwfood.model.Ingrediente;
 import it.uniroma3.siw.siwfood.model.Ricetta;
 import it.uniroma3.siw.siwfood.model.User;
 import it.uniroma3.siw.siwfood.response.RicettaResponse;
+import it.uniroma3.siw.siwfood.response.UserResponse;
 import it.uniroma3.siw.siwfood.service.UserService;
 import it.uniroma3.siw.siwfood.service.foodservices.ImageService;
 import it.uniroma3.siw.siwfood.service.foodservices.RicettaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,7 +37,7 @@ public class RicettaController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/addricettasium")
+    @PostMapping("/addricetta")
     public ResponseEntity<RicettaResponse> createRicetta(@RequestBody JsonNode requestBody) {
         System.out.println("Aggiungo una nuova ricetta");
         try {
@@ -68,6 +72,7 @@ public class RicettaController {
             /*
             Inizializzazione effettiva dei parametri della ricetta
              */
+
             savedRicetta.setTitle(title);
             savedRicetta.setListaIngredienti(listaIngredienti);
             savedRicetta.setDescription(description);
@@ -84,8 +89,6 @@ public class RicettaController {
         }
     }
 
-
-    // Endpoint per ottenere tutte le ricette
     @GetMapping
     public ResponseEntity<List<RicettaResponse>> getAllRicette() {
         List<Ricetta> ricette = ricettaService.getAllRicette();
@@ -95,14 +98,121 @@ public class RicettaController {
         return ResponseEntity.ok(ricetteResponse);
     }
 
-    // Endpoint per ottenere una ricetta per ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Ricetta> getRicettaById(@PathVariable Long id) {
-        Ricetta ricetta = ricettaService.getRicettaById(id);
-        if (ricetta != null) {
-            return ResponseEntity.ok(ricetta);
+    @GetMapping("/madeby/{id}")
+    public ResponseEntity<List<RicettaResponse>> getRicetteMadeByUser(@PathVariable Long id) {
+        User user = (User) userService.loadById(id);
+        if (user != null) {
+            List<Ricetta> ricette = ricettaService.getRicetteByAuthor(user);
+            List<RicettaResponse> ricetteResponse = ricette.stream()
+                    .map(RicettaResponse::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(ricetteResponse);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<RicettaResponse> getRicettaById(@PathVariable Long id) {
+        Ricetta ricetta = ricettaService.getRicettaById(id);
+        System.out.println(ricetta.getTitle());
+        if (ricetta != null) {
+            RicettaResponse response = new RicettaResponse(ricetta);
+            return ResponseEntity.ok(response);
+        } else {
+            System.out.println("nessuna ricetta trovata");
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteRicettaById(@PathVariable Long id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Object principal = authentication.getPrincipal();
+
+        if (!(principal instanceof User currentUser)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non autorizzato.");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        boolean isDeleted = ricettaService.deleteRicettaIfAuthor(id, user);
+        if (isDeleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Non sei autorizzato a eliminare questa ricetta.");
+        }
+    }
+
+    @PostMapping("{id}")
+    public ResponseEntity<?> modifyRicettaById(@PathVariable Long id, @RequestBody JsonNode requestBody) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Object principal = authentication.getPrincipal();
+
+        if (!(principal instanceof User currentUser)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non autorizzato.");
+        }
+        try {
+            Ricetta savedRicetta = this.ricettaService.getRicettaById(id);
+            String title = requestBody.get("title").asText();
+            String description = requestBody.get("description").asText();
+            Long userId = requestBody.get("authorId").asLong();
+
+
+            User autore = (User) userService.loadById(userId);
+
+            if (autore == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Gestione della lista degli ingredienti
+
+            List<Ingrediente> listaIngredienti = new ArrayList<>();
+            JsonNode ingredientiNode = requestBody.get("listaIngredienti");
+            if (ingredientiNode != null && ingredientiNode.isArray()) {
+                for (final JsonNode ingredientNode : ingredientiNode) {
+                    Ingrediente ingrediente = objectMapper.treeToValue(ingredientNode, Ingrediente.class);
+                    ingrediente.setRicetta(savedRicetta);
+                    listaIngredienti.add(ingrediente);
+                }
+            } else {
+                // Se listaIngredienti non è presente o non è un array, la lista degli ingredienti sarà vuota
+                System.out.println("Nessun ingrediente fornito nel JSON.");
+                // Puoi scegliere di aggiungere un messaggio di log o altre azioni appropriate
+            }
+
+
+            /*
+            Inizializzazione effettiva dei parametri della ricetta
+             */
+
+            savedRicetta.setTitle(title);
+
+            // Rimuovi ingredienti non più presenti
+            savedRicetta.getListaIngredienti().removeIf(ingrediente -> !listaIngredienti.contains(ingrediente));
+
+            // Aggiungi o aggiorna ingredienti esistenti
+            for (Ingrediente nuovoIngrediente : listaIngredienti) {
+                if (!savedRicetta.getListaIngredienti().contains(nuovoIngrediente)) {
+                    nuovoIngrediente.setRicetta(savedRicetta);
+                    savedRicetta.getListaIngredienti().add(nuovoIngrediente);
+                }
+            }
+
+            savedRicetta.setDescription(description);
+            ricettaService.saveRicetta(savedRicetta);
+
+            RicettaResponse response = new RicettaResponse(savedRicetta);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            // Log dell'errore
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

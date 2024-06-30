@@ -13,10 +13,10 @@
         <h5 class="card-title text-center">{{ ricetta.title }}</h5>
         <div class="space"></div>
         <div class="image-container">
-          <img *ngIf="ricetta.immagine && ricetta.immagine.trim().length > 0"
+          <img *ngIf="ricetta.immagineUrl"
                [src]="ricetta.immagineUrl"
-               alt="Immagine della ricetta"
-               class="card-image">
+               alt="Immagine ricetta"
+               class="card-image" loading="eager">
           <div class="space"></div>
           <a href="/ricette/{{ricetta.id}}" class="btn btn-primary btn-view-recipe">Vedi ricetta</a>
         </div>

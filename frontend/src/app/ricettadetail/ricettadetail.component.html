@@ -1,0 +1,120 @@
+<section class="background" style="background-color: #fff3cf;">
+  <div class="container">
+    <div class="card-list" *ngIf="ricetta">
+      <div class="card-header text-center">
+        <h1>{{ editMode ? 'Modifica Ricetta' : ricetta.title }}</h1>
+      </div>
+      <div class="space"></div>
+      <div class="card-body">
+        <ng-container *ngIf="!editMode">
+          <h5 class="card-title text-center">Autore: {{ ricetta.authorName }}</h5>
+          <div class="space"></div>
+          <div class="image-container">
+            <img *ngIf="ricetta.immagineUrl" [src]="ricetta.immagineUrl" alt="Immagine ricetta" class="card-image" loading="eager">
+          </div>
+          <div class="space"></div>
+          <h5 class="card-title text-start">Descrizione:</h5>
+          <p>{{ ricetta.description }}</p>
+          <div class="space"></div>
+
+          <ng-container *ngIf="ricetta.listaIngredienti && ricetta.listaIngredienti.length > 0">
+            <h2>Ingredienti:</h2>
+            <ul class="ingredient-list">
+              <li *ngFor="let ingrediente of ricetta.listaIngredienti" class="ingredient-item row align-items-center">
+                <div class="col-md-3">
+                  <span>{{ ingrediente.nome }}</span>
+                </div>
+                <div class="col-md-3">
+                  <span>{{ ingrediente.quantita }}</span>
+                </div>
+                <div class="col-md-3">
+                  <span>{{ ingrediente.tipoQuantita }}</span>
+                </div>
+              </li>
+            </ul>
+          </ng-container>
+        </ng-container>
+
+        <!-- Container per la EditMode -->
+        <ng-container *ngIf="editMode">
+          <form #form="ngForm">
+            <div class="form-group mb-3">
+              <label for="title">Titolo</label>
+              <input type="text" class="form-control" id="title" [(ngModel)]="ricettaModificata.title" name="title" maxlength="244" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="description">Descrizione</label>
+              <textarea class="form-control" id="description" rows="3" [(ngModel)]="ricettaModificata.description" name="description" maxlength="499" required></textarea>
+              <div *ngIf="form.controls['description'].invalid && (form.controls['description'].dirty || form.controls['description'].touched)" class="text-danger">
+                La descrizione è obbligatoria e deve essere inferiore a 500 caratteri.
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="imageUpload">Carica Immagine</label>
+              <input type="file" class="form-control" id="imageUpload" (change)="onImageSelected($event)">
+            </div>
+            <div class="form-group mb-3" *ngIf="imagePreview">
+              <label>Anteprima Immagine</label>
+              <div class="minispace"></div>
+              <img [src]="imagePreview" alt="Anteprima Immagine" class="img-thumbnail" style="max-width: 200px;">
+            </div>
+
+            <!-- container che rimuove e aggiunge gli ingredienti -->
+            <ng-container *ngIf="ricettaModificata.listaIngredienti">
+              <h2 class="mb-3">Lista degli ingredienti:</h2>
+              <ul class="list-unstyled">
+                <li *ngFor="let ingrediente of ricettaModificata.listaIngredienti; let i = index">
+                  <div class="row align-items-center mb-3">
+                    <div class="col-md-3">
+                      <input type="text" class="form-control rounded-input" [(ngModel)]="ingrediente.nome" name="nome{{i}}" placeholder="Nome" required>
+                    </div>
+                    <div class="col-md-3">
+                      <input type="number" class="form-control rounded-input" [(ngModel)]="ingrediente.quantita" name="quantita{{i}}" placeholder="Quantità" min="0.1" required>
+                    </div>
+                    <div class="col-md-2">
+                      <select class="form-select rounded-3" [(ngModel)]="ingrediente.tipoQuantita" name="tipoQuantita{{i}}" required>
+                        <option *ngFor="let tipo of tipiQuantita" [value]="tipo">{{ tipo }}</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <button class="btn btn-danger btn-sm rounded-pill" (click)="removeIngredient(i)">Rimuovi</button>
+                    </div>
+                  </div>
+                  <!-- Avviso sui campi obbligatori -->
+                  <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                      <div *ngIf="ingrediente.nome === '' || ingrediente.quantita < 0.1 || ingrediente.tipoQuantita === ''" class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Tutti i campi devono essere riempiti
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <div class="text-center">
+                <button class="btn btn-success btn-sm rounded-pill" (click)="addIngredient()">Aggiungi</button>
+              </div>
+            </ng-container>
+
+            <div class="d-flex justify-content-end">
+              <button class="btn btn-primary me-2" (click)="saveChanges()" [disabled]="!isFormValid(form)">
+                <i class="bi bi-check-circle"></i> Salva
+              </button>
+              <button class="btn btn-secondary" (click)="cancelEdit()">
+                <i class="bi bi-x-circle"></i> Annulla
+              </button>
+            </div>
+          </form>
+        </ng-container>
+
+        <!-- Pulsante per iniziare la editmode -->
+        <div class="d-flex justify-content-end">
+          <button *ngIf="isAuthor() && !editMode" class="btn btn-primary" (click)="toggleEditMode()">
+            <i class="bi bi-pencil"></i> Modifica
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -18,8 +18,8 @@ public class Image {
     private User user;
 
     // Uno a uno con RicettaModel
-    @OneToOne
-    @JoinColumn(name = "ricetta_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "ricetta_id")
     private Ricetta ricetta;
 
     /* Getter and setters */

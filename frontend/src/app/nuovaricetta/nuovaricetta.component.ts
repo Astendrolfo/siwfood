@@ -22,7 +22,9 @@ export class NuovaricettaComponent {
     authorId: this.authService.getUserId() ?? 0,
     authorName: '',
     description: '',
-    immagine: '',
+    immagine1: '',
+    immagine2: '',
+    immagine3: '',
     listaIngredienti: [],
     title: '',
     immagineUrl: ''
@@ -72,7 +74,7 @@ export class NuovaricettaComponent {
   submitForm() {
     this.formSubmitted = true;
     if (this.formIsValid()) {
-      const url = 'http://localhost:8080/api/ricette/addricettasium';
+      const url = 'http://localhost:8080/api/ricette/addricetta';
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       const body = JSON.stringify(this.ricetta);
 

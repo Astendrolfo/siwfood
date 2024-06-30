@@ -1,0 +1,54 @@
+<section class="vh-1000" style="background-color: #fff3cf;">
+  <div class="container">
+    <div class="space"></div>
+    <h1 class="text-center">Le tue ricette SiwFood</h1>
+    <h5 class="text-center">un mondo culinario tutto da scoprire</h5>
+    <div class="space"></div>
+    <div class="card-list">
+      <div class="card" *ngFor="let ricetta of ricette">
+        <div class="card-header">
+          <p class="card-title"> {{ ricetta.title }} </p>
+        </div>
+        <div class="card-body d-flex align-items-center">
+          <div class="image-container">
+
+            <!--- Non posso usare NgSrc per migliorare la performance perché le immagini sono blob -->
+
+            <img *ngIf="ricetta.immagine1 && ricetta.immagine1.trim().length > 0"
+                 [src]="ricetta.immagineUrl"
+                 alt="Immagine della ricetta"
+                 class="card-image" loading ="eager">
+          </div>
+          <div class="pulsanti">
+            <button class="btn btn-danger btn-delete-recipe" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" (click)="selectedRicetta = ricetta">
+              <i class="bi bi-trash-fill"></i> Cancella Ricetta
+            </button>
+            <a href="/ricette/{{ ricetta.id }}" class="btn btn-success btn-view-recipe">
+              <i class="bi bi-eye-fill"></i> Visualizza Ricetta
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Conferma Eliminazione</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Sei sicuro di voler eliminare la ricetta "{{ selectedRicetta?.title }}"?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteRicetta(selectedRicetta?.id)">Elimina</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

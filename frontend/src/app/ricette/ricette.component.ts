@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Ricetta } from '../models/ricetta.model';
 import { RicettaService } from '../services/ricetta.service';
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {ImageLoaderService} from "../services/image.loader.service";
 
 @Component({
   selector: 'app-ricette',
@@ -9,7 +10,8 @@ import {NgForOf, NgIf} from "@angular/common";
   standalone: true,
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    NgOptimizedImage,
   ],
   styleUrls: ['./ricette.component.css']
 })
@@ -17,7 +19,7 @@ export class RicetteComponent implements OnInit {
 
   ricette!: Ricetta[];
 
-  constructor(private ricettaService: RicettaService) { }
+  constructor(private ricettaService: RicettaService, private imageLoaderService: ImageLoaderService) { }
 
   ngOnInit(): void {
     this.caricaRicette();
@@ -29,7 +31,7 @@ export class RicetteComponent implements OnInit {
         (data) => {
           this.ricette = data.map(ricetta => ({
             ...ricetta,
-            immagineUrl: this.convertiBase64ToUrl(ricetta.immagine)
+            immagineUrl: this.loadImage(ricetta.immagine1)
           }));
         },
         (error) => {
@@ -38,14 +40,7 @@ export class RicetteComponent implements OnInit {
       );
   }
 
-  convertiBase64ToUrl(base64: string): string {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'image/jpeg' });
-    return URL.createObjectURL(blob);
+  loadImage(image :string) {
+    return this.imageLoaderService.convertiBase64ToUrl(image);
   }
 }

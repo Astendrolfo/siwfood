@@ -33,7 +33,7 @@ export class RicettaService {
     return this.http.delete<void>(url);
   }
 
-  modifyRicetta(ricetta: Ricetta, image: File): any {
+  modifyRicetta(ricetta: Ricetta, image1: File, image2: File, image3: File): any {
     {
       const headers = new HttpHeaders({'Content-Type': 'application/json'});
       const body = JSON.stringify(ricetta);
@@ -43,11 +43,25 @@ export class RicettaService {
           next: (response: any) => {
             console.log('Dati inviati con successo!');
             const idRicetta = response.id;
-            if (image && idRicetta) {
-              this.imageService.uploadImageForRecipe(idRicetta, image)
-                .subscribe(response => {
-                  console.log('Upload successful', response);
-                });
+            if (idRicetta) {
+              if (image1) {
+                this.imageService.uploadImageForRecipeWithIndex(idRicetta, image1, 0)
+                  .subscribe(response => {
+                    console.log('Upload successful', response);
+                  });
+              }
+              if (image2) {
+                this.imageService.uploadImageForRecipeWithIndex(idRicetta, image2, 1)
+                  .subscribe(response => {
+                    console.log('Upload successful', response);
+                  });
+              }
+              if (image3) {
+                this.imageService.uploadImageForRecipeWithIndex(idRicetta, image3, 2)
+                  .subscribe(response => {
+                    console.log('Upload successful', response);
+                  });
+              }
             }
             return true;
           },

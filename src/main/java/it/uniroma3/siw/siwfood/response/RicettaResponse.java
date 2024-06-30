@@ -22,7 +22,10 @@ public class RicettaResponse {
         this.authorId = ricetta.getAuthor().getId();
         this.authorName = ricetta.getAuthor().getNome();
         this.listaIngredienti = ricetta.getListaIngredienti();
-        this.immagine1 = (ricetta.getImages().get(0) != null) ? ricetta.getImages().get(0).getData() : new byte[0];
+        if (!ricetta.getImages().isEmpty()) {
+            this.immagine1 = (ricetta.getImages().get(0) != null) ? ricetta.getImages().get(0).getData() : new byte[0];
+        }
+        else immagine1 = null;
         if (ricetta.getImages().size() > 1) {
             this.immagine2 = (ricetta.getImages().get(1) != null) ? ricetta.getImages().get(1).getData() : new byte[0];
         }

@@ -4,6 +4,7 @@
     import it.uniroma3.siw.siwfood.response.ImageResponse;
     import it.uniroma3.siw.siwfood.service.foodservices.ImageService;
     import org.springframework.http.HttpHeaders;
+    import org.springframework.http.HttpStatus;
     import org.springframework.http.MediaType;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
@@ -96,13 +97,17 @@
         }
 
         @PostMapping("/upload/recipe/{recipeId}")
-        public ResponseEntity<Image> uploadImageForRecipe(@PathVariable Long recipeId,
-                                                        @RequestParam("file") MultipartFile file) {
+        public ResponseEntity<ImageResponse> uploadImageForRecipe(@PathVariable Long recipeId, @RequestParam("file") MultipartFile file, int index) {
             try {
-                Image savedImage = imageService.saveImageForRicetta(file, recipeId);
-                return ResponseEntity.ok(savedImage);
+                Image savedImage = imageService.saveImageForRicetta(file, recipeId, index);
+                ImageResponse response = new ImageResponse(savedImage.getId(), savedImage.getData(), savedImage.getRicetta().getId(), savedImage.getUser()  != null ? savedImage.getUser().getId() : null);
+                return ResponseEntity.ok(response);
             } catch (IOException e) {
                 return ResponseEntity.badRequest().build();
+            } catch (Exception e) {
+                // Log dell'eccezione per identificare la causa del problema
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
 

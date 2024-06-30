@@ -12,9 +12,15 @@
           <div class="image-container">
             <img *ngIf="ricetta.immagineUrl" [src]="ricetta.immagineUrl" alt="Immagine ricetta" class="card-image" loading="eager">
           </div>
+          <div class="image-container">
+            <img *ngIf="ricetta.immagineUrl2" [src]="ricetta.immagineUrl2" alt="Immagine ricetta" class="card-image" loading="eager">
+          </div>
           <div class="space"></div>
           <h5 class="card-title text-start">Descrizione:</h5>
           <p>{{ ricetta.description }}</p>
+          <div class="image-container">
+            <img *ngIf="ricetta.immagineUrl3" [src]="ricetta.immagineUrl3" alt="Immagine ricetta" class="card-image" loading="eager">
+          </div>
           <div class="space"></div>
 
           <ng-container *ngIf="ricetta.listaIngredienti && ricetta.listaIngredienti.length > 0">
@@ -50,9 +56,23 @@
               </div>
             </div>
 
-            <div class="form-group mb-3">
-              <label for="imageUpload">Carica Immagine</label>
-              <input type="file" class="form-control" id="imageUpload" (change)="onImageSelected($event)">
+            <!-- Caricamento delle immagini -->
+            <div class="mb-3">
+              <label for="image1" class="form-label">Immagine principale</label>
+              <input type="file" id="image1" class="form-control" (change)="onImageSelected($event, 1)">
+              <img *ngIf="ricettaModificata.immagineUrl" [src]="ricettaModificata.immagineUrl" class="img-fluid mt-2" alt="Immagine principale">
+            </div>
+
+            <div class="mb-3">
+              <label for="image2" class="form-label">Seconda immagine</label>
+              <input type="file" id="image2" class="form-control" (change)="onImageSelected($event, 2)">
+              <img *ngIf="ricettaModificata.immagineUrl2" [src]="ricettaModificata.immagineUrl2" class="img-fluid mt-2" alt="Seconda immagine">
+            </div>
+
+            <div class="mb-3">
+              <label for="image3" class="form-label">Terza immagine</label>
+              <input type="file" id="image3" class="form-control" (change)="onImageSelected($event, 3)">
+              <img *ngIf="ricettaModificata.immagineUrl3" [src]="ricettaModificata.immagineUrl3" class="img-fluid mt-2" alt="Terza immagine">
             </div>
             <div class="form-group mb-3" *ngIf="imagePreview">
               <label>Anteprima Immagine</label>

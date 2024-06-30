@@ -31,6 +31,13 @@ export class ImageService {
     return this.http.post(`${this.apiUrl}/upload/recipe/${recipeId}`, formData);
   }
 
+  uploadImageForRecipeWithIndex(recipeId: number, file: File, index: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('index', index.toString()); // Se necessario, aggiungi l'indice come parte del FormData
+    return this.http.post(`${this.apiUrl}/upload/recipe/${recipeId}`, formData);
+  }
+
   deleteImage(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

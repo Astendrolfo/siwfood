@@ -74,6 +74,29 @@ public class ImageService {
         }
     }
 
+    public Image saveImageForRicetta(MultipartFile file, Long ricettaId, int index) throws IOException {
+        Ricetta ricetta = ricettaRepository.findById(ricettaId)
+                .orElseThrow(() -> new RuntimeException("RicettaModel not found"));
+
+        if (index >= 0 && index < ricetta.getImages().size()) {
+            Image image = ricetta.getImages().get(index);
+            System.out.println("SOSTITUISCO IMMAGINE " + image.getId());
+            image.setData(file.getBytes());
+            // Aggiornamento della relazione bidirezionale
+            image.setRicetta(ricetta);
+            return imageRepository.save(image);
+        } else {
+            System.out.println("IMMAGINE NUOVA");
+            Image newImage = new Image();
+            newImage.setData(file.getBytes());
+            // Aggiornamento della relazione bidirezionale
+            newImage.setRicetta(ricetta);
+            ricetta.addImage(newImage);
+            ricettaRepository.save(ricetta);
+            return newImage;
+        }
+    }
+
     public void deleteImage(Long id) {
         imageRepository.deleteById(id);
     }

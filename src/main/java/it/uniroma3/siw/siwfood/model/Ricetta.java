@@ -29,7 +29,13 @@ public class Ricetta {
     private List<Ingrediente> listaIngredienti = new ArrayList<>();
 
     @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL)
+    @OrderColumn
     private List<Image> images = new ArrayList<>();
+
+    public Ricetta() {
+        this.listaIngredienti = new ArrayList<>();
+        this.images = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;

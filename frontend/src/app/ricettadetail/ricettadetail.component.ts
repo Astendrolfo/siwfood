@@ -29,7 +29,9 @@ export class RicettadetailComponent implements OnInit{
     immagine3: '',
     listaIngredienti: [],
     title: '',
-    immagineUrl: ''
+    immagineUrl: '',
+    immagineUrl2: '',
+    immagineUrl3: ''
   };
   ricetta!: Ricetta;
   editMode = false;
@@ -37,7 +39,9 @@ export class RicettadetailComponent implements OnInit{
   success: boolean = false;
   tipiQuantita: string[] = ['Grammi', 'Chilogrammi', 'Litri', 'Millilitri', 'Cucchiai', ' '];
   imagePreview: string | ArrayBuffer | null = null;
-  selectedFile : any;
+  file1 : any;
+  file2 : any;
+  file3 : any;
 
 
   constructor(
@@ -73,7 +77,9 @@ export class RicettadetailComponent implements OnInit{
         (data) => {
           this.ricetta = {
             ...data,
-            immagineUrl: this.loadImage(data.immagine1)
+            immagineUrl: this.loadImage(data.immagine1),
+            immagineUrl2: this.loadImage(data.immagine2),
+            immagineUrl3: this.loadImage(data.immagine3)
           };
 
           this.ricettaModificata = { ...this.ricetta };
@@ -102,7 +108,7 @@ export class RicettadetailComponent implements OnInit{
   saveChanges(): void {
     console.log('Modifiche salvate:', this.ricetta);
     this.editMode = false;
-    this.ricettaService.modifyRicetta(this.ricettaModificata, this.selectedFile);
+    this.ricettaService.modifyRicetta(this.ricettaModificata, this.file1, this.file2, this.file3);
   }
 
   cancelEdit(): void {
@@ -135,16 +141,28 @@ export class RicettadetailComponent implements OnInit{
     return true;
   }
 
-  onImageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-        this.ricettaModificata.immagine1 = reader.result as string;
-      };
-      reader.readAsDataURL(this.selectedFile);
+  onImageSelected(event: any, index: number): void {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      if (index === 1) {
+        this.file1 = file;
+        this.readURL(file, 'immagineUrl');
+      } else if (index === 2) {
+        this.file2 = file;
+        this.readURL(file, 'immagineUrl2');
+      } else if (index === 3) {
+        this.file3 = file;
+        this.readURL(file, 'immagineUrl3');
+      }
     }
+  }
+
+  readURL(file: File, property: string): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.ricettaModificata[property] = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 }

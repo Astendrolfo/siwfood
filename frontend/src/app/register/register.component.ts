@@ -4,6 +4,8 @@ import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {ImageService} from "../services/image.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AppComponent} from "../app.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -25,8 +27,10 @@ export class RegisterComponent implements OnInit {
   confirmPassword: string = '';
   emailValid: boolean = true;
   imageUrl: any;
+  errore: boolean = false;
+  success: boolean = false;
 
-  constructor(private http: HttpClient, private imageService: ImageService, private sanitizer: DomSanitizer) {}
+  constructor(private router: Router, private appComponent: AppComponent, private http: HttpClient, private imageService: ImageService, private sanitizer: DomSanitizer) {}
 
   passwordsMatch(): boolean {
     return this.password === this.confirmPassword;
@@ -51,14 +55,16 @@ export class RegisterComponent implements OnInit {
 
       this.http.post('http://localhost:8080/api/register', userData).subscribe(
         response => {
-          console.log('Registrazione avvenuta con successo', response);
+          this.appComponent.ngOnInit();
+          this.success = true;
+          setTimeout(() => {
+            this.router.navigate(['/']).then();
+          }, 2000);
         },
         error => {
-          console.error('Errore nella registrazione', error);
+          this.errore = true;
         }
       );
-    } else {
-      console.log('Form non valido, le password non combaciano o l\'email non è valida.');
     }
   }
 

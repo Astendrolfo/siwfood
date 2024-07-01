@@ -16,6 +16,8 @@ public class Ricetta {
     private Long id; // identificatore
 
     private String title; // titolo della ricetta
+
+    @Column(length = 500)
     private String description;
 
     @ManyToOne

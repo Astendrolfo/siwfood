@@ -1,95 +1,16 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  padding: 20px;
-}
-
 .vh-1000 {
   min-height: 100vh; /* Altezza minima del 100% del viewport */
   background-color: #fff3cf;
   padding-bottom: 20px; /* Aggiungi padding in basso per spazio tra la section e il footer */
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.card-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+.img-placeholder {
+  width: 100%; /* Larghezza desiderata per l'immagine placeholder */
+  height: 200px; /* Altezza desiderata per l'immagine placeholder */
+  background-color: #f0f0f0; /* Colore di sfondo dell'immagine placeholder */
+  border-radius: 8px; /* Arrotondamento dei bordi, se necessario */
 }
 
 .card {
-  width: calc(50% - 20px); /* Imposta la larghezza delle card al 50% con uno spazio di 20px tra di loro */
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-  background-color: #ed9233;
-  color: #fff;
-  font-size: 18px;
-  padding: 10px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Centra il contenuto lungo l'asse verticale */
-  height: 100%; /* Rende la card-body alta quanto la card */
-}
-
-.card-title {
-  margin-bottom: 10px;
-}
-
-.card-text {
-  margin-bottom: 20px;
-}
-
-.card-author {
-  font-style: italic;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.card-image {
-  max-width: 100%; /* L'immagine della ricetta si adatta alla larghezza della card */
-  max-height: 250px; /* Limita l'altezza massima dell'immagine */
-  width: auto;
-  height: auto;
-  margin-bottom: 10px; /* Aggiunge spazio sotto l'immagine */
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  text-decoration: none;
-  border-radius: 20px; /* Rende il pulsante arrotondato */
-  margin-top: auto; /* Sposta il pulsante in basso fino alla fine della card */
-  align-self: center; /* Centra il pulsante orizzontalmente */
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra gli elementi lungo l'asse orizzontale */
-  justify-content: center; /* Centra gli elementi lungo l'asse verticale */
-}
-
-.space {
-  margin: 0;
-  padding: 0;
-  height: 50px;
+  min-width: 250px; /* Larghezza minima della card */
 }

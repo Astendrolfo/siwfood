@@ -4,7 +4,7 @@ body {
   padding: 20px;
 }
 
-.vh-1000 {
+.background {
   min-height: 100vh; /* Altezza minima del 100% del viewport */
   background-color: #fff3cf;
   padding-bottom: 20px; /* Aggiungi padding in basso per spazio tra la section e il footer */
@@ -92,3 +92,16 @@ body {
   text-align: center; /* Centra il testo all'interno del pulsante */
 }
 
+.btn-add-recipe {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}

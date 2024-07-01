@@ -11,6 +11,7 @@ import it.uniroma3.siw.siwfood.service.UserService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,7 +72,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
 
             User user = new User();
@@ -84,9 +85,9 @@ public class AuthController {
             roles.add(roleService.getRoleById(1L));
             user.setRoleList(roles);
             userService.registerUser(user);
-            return "Utente registrato correttamente.";
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return "Errore nella registrazione.";
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

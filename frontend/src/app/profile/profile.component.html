@@ -1,55 +1,81 @@
 <section class="vh-100" style="background-color: #fff3cf;">
-<div class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="card custom-card">
-    <div class="card-body">
-      <h5 class="card-title">Il mio profilo SiwFood</h5>
-      <form>
-        <div class="space"></div>
-        <img *ngIf="imageUrl" [src]="imageUrl" alt="Immagine Profilo" class="pfp mt-lg-3 mb-lg-3">
-        <div class="space"></div>
-        <div class="mb-3 space-below-input" *ngIf="editing">
-          <label for="inputImage" class="form-label">Carica Immagine Profilo</label>
-          <div class="input-group">
-            <input type="file" id="inputImage" class="form-control-file d-none" (change)="onFileChange($event)" hidden>
-            <img *ngIf="preview" [src]="preview" alt="Preview" class="imagePreview mt-lg-3 mb-lg-3">
-            <label for="inputImage" class="btn btn-secondary btn-upload">
-              <i class="bi bi-cloud-upload"></i> Scegli File
-            </label>
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card custom-card animate__animated animate__fadeIn">
+      <div class="card-body">
+        <h3 class="card-title animate__animated animate__fadeInDown text-center mb-4">
+          <i class="bi bi-person-circle"></i> Profilo SiwFood di {{userInfo.nome}}
+        </h3>
+        <form>
+          <div class="space"></div>
+          <img *ngIf="imageUrl" [src]="imageUrl" alt="Immagine Profilo" class="pfp mt-lg-3 mb-lg-3 animate__animated animate__fadeIn">
+          <div class="space"></div>
+          <div class="mb-3 space-below-input animate__animated animate__fadeIn" *ngIf="editing">
+            <label for="inputImage" class="form-label">Carica Immagine Profilo</label>
+            <div class="input-group">
+              <input type="file" id="inputImage" class="form-control-file d-none" (change)="onFileChange($event)" hidden>
+              <img *ngIf="preview" [src]="preview" alt="Preview" class="imagePreview mt-lg-3 mb-lg-3 animate__animated animate__fadeIn">
+              <label for="inputImage" class="btn btn-secondary btn-upload">
+                <i class="bi bi-cloud-upload"></i> Scegli File
+              </label>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label for="inputEmail" class="form-label">Email</label>
-          <input type="email" id="inputEmail" class="form-control" [(ngModel)]="userInfo.email" name="email" [disabled]="!editing">
-        </div>
-        <div class="mb-3">
-          <label for="inputNome" class="form-label">Nome</label>
-          <input type="text" id="inputNome" class="form-control" [(ngModel)]="userInfo.nome" name="nome" [disabled]="!editing">
-        </div>
-        <div class="mb-3">
-          <label for="inputCognome" class="form-label">Cognome</label>
-          <input type="text" id="inputCognome" class="form-control" [(ngModel)]="userInfo.cognome" name="cognome" [disabled]="!editing">
-        </div>
-        <div class="mb-3">
-          <label for="inputDataNascita" class="form-label">Data di Nascita</label>
-          <input type="date" id="inputDataNascita" class="form-control" [(ngModel)]="userInfo.dataNascita" name="dataNascita" [disabled]="!editing">
-        </div>
+          <div class="mb-3 animate__animated animate__fadeIn">
+            <label for="inputEmail" class="form-label"><i class="bi bi-envelope"></i> Email</label>
+            <input type="email" id="inputEmail" class="form-control" [(ngModel)]="userInfo.email" name="email" [disabled]="!editing">
+          </div>
+          <div class="mb-3 animate__animated animate__fadeIn">
+            <label for="inputNome" class="form-label"><i class="bi bi-person"></i> Nome</label>
+            <input type="text" id="inputNome" class="form-control" [(ngModel)]="userInfo.nome" name="nome" [disabled]="!editing">
+          </div>
+          <div class="mb-3 animate__animated animate__fadeIn">
+            <label for="inputCognome" class="form-label"><i class="bi bi-person"></i> Cognome</label>
+            <input type="text" id="inputCognome" class="form-control" [(ngModel)]="userInfo.cognome" name="cognome" [disabled]="!editing">
+          </div>
+          <div class="mb-3 animate__animated animate__fadeIn">
+            <label for="inputDataNascita" class="form-label"><i class="bi bi-calendar"></i> Data di Nascita</label>
+            <input type="date" id="inputDataNascita" class="form-control" [(ngModel)]="userInfo.dataNascita" name="dataNascita" [disabled]="!editing">
+          </div>
 
-        <div class="d-flex justify-content-end">
-          <button type="button" class="modifica btn btn-primary arrotonda" (click)="modifica()" *ngIf="!editing">
-            <i class="bi bi-pencil"></i> Modifica
-          </button>
-          <a href="/myrecipes" class="btn btn-success arrotonda" *ngIf="!editing">
-            <i class="bi bi-book"></i> Le mie ricette</a>
-          <button type="button" class="annulla btn btn-secondary arrotonda" (click)="annulla()" *ngIf="editing">
-            <i class="bi bi-x"></i> Annulla
-          </button>
-          <button type="submit" class="salva btn btn-success arrotonda" (click)="salva()" *ngIf="editing">
-            <i class="bi bi-check"></i> Salva
-          </button>
-        </div>
-      </form>
+          <div class="d-flex justify-content-end animate__animated animate__fadeIn">
+            <button type="button" class="modifica btn btn-primary arrotonda" (click)="modifica()" *ngIf="isOwner() && !editing">
+              <i class="bi bi-pencil"></i> Modifica
+            </button>
+            <a href="/myrecipes" class="btn btn-success arrotonda" *ngIf="!editing && isOwner()">
+              <i class="bi bi-book"></i> Le mie ricette</a>
+            <button type="button" class="elimina btn btn-danger arrotonda" data-bs-toggle="modal" data-bs-target="#deleteProfileModal" *ngIf="editing">
+              <i class="bi bi-trash"></i> Elimina Profilo
+            </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="eliminaProfilo()" *ngIf="isAdmin() && !isOwner()">Elimina Profilo</button>
+            <button type="button" class="annulla btn btn-secondary arrotonda" (click)="annulla()" *ngIf="editing">
+              <i class="bi bi-x"></i> Annulla
+            </button>
+            <button type="submit" class="salva btn btn-success arrotonda" (click)="salva()" *ngIf="editing">
+              <i class="bi bi-check"></i> Salva
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Modal per la conferma di eliminazione -->
+  <div class="modal fade" id="deleteProfileModal" tabindex="-1" aria-labelledby="deleteProfileModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteProfileModalLabel">Conferma Eliminazione Profilo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Sei sicuro di voler eliminare il tuo profilo? Questa azione non può essere annullata.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="eliminaProfilo()">Elimina Profilo</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

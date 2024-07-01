@@ -1,5 +1,5 @@
 <section class="background" style="background-color: #fff3cf;">
-  <div class="container">
+  <div class="container py-5 d-flex flex-column align-items-center justify-content-center animate__animated animate__fadeIn">
     <div class="card-list" *ngIf="ricetta">
       <div class="card-header text-center">
         <h1>{{ editMode ? 'Modifica Ricetta' : ricetta.title }}</h1>
@@ -8,24 +8,33 @@
       <div class="card-body">
         <ng-container *ngIf="!editMode">
           <h5 class="card-title text-center">Autore: {{ ricetta.authorName }}</h5>
+          <div class="text-center animate__animated animate__fadeIn">
+            <a href="/cuochi/{{ ricetta.authorId }}" class="btn btn-outline-secondary btn-sm rounded-pill">
+              <i class="bi bi-person-circle"></i> Visualizza Profilo
+            </a>
           <div class="space"></div>
-          <div class="image-container">
-            <img *ngIf="ricetta.immagineUrl" [src]="ricetta.immagineUrl" alt="Immagine ricetta" class="card-image" loading="eager">
           </div>
-          <div class="image-container">
-            <img *ngIf="ricetta.immagineUrl2" [src]="ricetta.immagineUrl2" alt="Immagine ricetta" class="card-image" loading="eager">
+          <div class="image-container" *ngIf="ricetta.immagineUrl && ricetta.immagineUrl.trim()">
+            <img [src]="ricetta.immagineUrl" alt="Immagine ricetta" class="card-image img-fluid mb-3 rounded animate__animated animate__fadeIn">
+          </div>
+          <div class="image-container" *ngIf="!ricetta.immagineUrl || !ricetta.immagineUrl.trim()">
+            <div class="image-placeholder mb-3 rounded"></div>
+          </div>
+          <div class="image-container" *ngIf="ricetta.immagineUrl2 && ricetta.immagineUrl2.trim()">
+            <img [src]="ricetta.immagineUrl2" alt="Immagine ricetta" class="card-image img-fluid mb-3 rounded animate__animated animate__fadeIn">
           </div>
           <div class="space"></div>
           <h5 class="card-title text-start">Descrizione:</h5>
           <p>{{ ricetta.description }}</p>
-          <div class="image-container">
-            <img *ngIf="ricetta.immagineUrl3" [src]="ricetta.immagineUrl3" alt="Immagine ricetta" class="card-image" loading="eager">
+          <div class="image-container" *ngIf="ricetta.immagineUrl3 && ricetta.immagineUrl3.trim()">
+            <img [src]="ricetta.immagineUrl3" alt="Immagine ricetta" class="card-image img-fluid mb-3 rounded animate__animated animate__fadeIn">
           </div>
+
           <div class="space"></div>
 
           <ng-container *ngIf="ricetta.listaIngredienti && ricetta.listaIngredienti.length > 0">
-            <h2>Ingredienti:</h2>
-            <ul class="ingredient-list">
+            <h2 class="animate__animated animate__fadeIn">Ingredienti:</h2>
+            <ul class="ingredient-list animate__animated animate__fadeIn">
               <li *ngFor="let ingrediente of ricetta.listaIngredienti" class="ingredient-item row align-items-center">
                 <div class="col-md-3">
                   <span>{{ ingrediente.nome }}</span>
@@ -33,7 +42,7 @@
                 <div class="col-md-3">
                   <span>{{ ingrediente.quantita }}</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" *ngIf="ingrediente.tipoQuantita && ingrediente.tipoQuantita !== 'empty'">
                   <span>{{ ingrediente.tipoQuantita }}</span>
                 </div>
               </li>
@@ -61,6 +70,9 @@
               <label for="image1" class="form-label">Immagine principale</label>
               <input type="file" id="image1" class="form-control" (change)="onImageSelected($event, 1)">
               <img *ngIf="ricettaModificata.immagineUrl" [src]="ricettaModificata.immagineUrl" class="img-fluid mt-2" alt="Immagine principale">
+              <div class="image-container" *ngIf="(!ricetta.immagineUrl || !ricetta.immagineUrl.trim()) && (!ricettaModificata.immagineUrl || !ricettaModificata.immagineUrl?.trim())">
+                <div class="image-placeholder mb-3 rounded"></div>
+              </div>
             </div>
 
             <div class="mb-3">
@@ -114,8 +126,12 @@
               <div class="text-center">
                 <button class="btn btn-success btn-sm rounded-pill" (click)="addIngredient()">Aggiungi</button>
               </div>
-            </ng-container>
 
+
+            </ng-container>
+            <button class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+              <i class="bi bi-trash"></i> Elimina Ricetta
+            </button>
             <div class="d-flex justify-content-end">
               <button class="btn btn-primary me-2" (click)="saveChanges()" [disabled]="!isFormValid(form)">
                 <i class="bi bi-check-circle"></i> Salva
@@ -133,7 +149,25 @@
             <i class="bi bi-pencil"></i> Modifica
           </button>
         </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Modal di conferma eliminazione -->
+  <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel">Conferma Eliminazione Ricetta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Sei sicuro di voler eliminare questa ricetta?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="eliminaRicetta()">Elimina</button>
+        </div>
       </div>
     </div>
   </div>

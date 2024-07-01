@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {ImageService} from "../../services/image.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AppComponent} from "../../app.component";
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit{
   errorMessage: string = '';
   imageUrl: any;
 
-  constructor(private authService: AuthService, private router: Router, private imageService: ImageService, private sanitizer: DomSanitizer) { }
+  constructor(private appComponent: AppComponent, private authService: AuthService, private router: Router, private imageService: ImageService, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     const imageId = 1;
@@ -46,6 +47,8 @@ export class LoginComponent implements OnInit{
           localStorage.setItem('token', response.token);
           localStorage.setItem('username', response.username);
           localStorage.setItem('userId', response.userId);
+          localStorage.setItem('role', response.role[0].name);
+          this.appComponent.ngOnInit();
           setTimeout(() => {
             this.router.navigate(['/']).then(r => this.success && this.requested);
           }, 2000);

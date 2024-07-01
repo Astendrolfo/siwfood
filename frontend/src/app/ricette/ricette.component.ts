@@ -31,7 +31,7 @@ export class RicetteComponent implements OnInit {
         (data) => {
           this.ricette = data.map(ricetta => ({
             ...ricetta,
-            immagineUrl: this.loadImage(ricetta.immagine1)
+            immagineUrl: ricetta.immagine1 ? this.loadImage(ricetta.immagine1) : '',
           }));
         },
         (error) => {

@@ -38,8 +38,18 @@ public class RicettaController {
     }
 
     @PostMapping("/addricetta")
-    public ResponseEntity<RicettaResponse> createRicetta(@RequestBody JsonNode requestBody) {
-        System.out.println("Aggiungo una nuova ricetta");
+    public ResponseEntity<?> createRicetta(@RequestBody JsonNode requestBody) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Object principal = authentication.getPrincipal();
+
+        if (!(principal instanceof User currentUser)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non autorizzato.");
+        }
+
+        String token = (String) authentication.getCredentials();
+
         try {
             Ricetta savedRicetta = new Ricetta();
             String title = requestBody.get("title").asText();
@@ -116,13 +126,8 @@ public class RicettaController {
     public ResponseEntity<RicettaResponse> getRicettaById(@PathVariable Long id) {
         Ricetta ricetta = ricettaService.getRicettaById(id);
         System.out.println(ricetta.getTitle());
-        if (ricetta != null) {
-            RicettaResponse response = new RicettaResponse(ricetta);
-            return ResponseEntity.ok(response);
-        } else {
-            System.out.println("nessuna ricetta trovata");
-            return ResponseEntity.notFound().build();
-        }
+        RicettaResponse response = new RicettaResponse(ricetta);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("{id}")
@@ -152,12 +157,19 @@ public class RicettaController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Object principal = authentication.getPrincipal();
+        Ricetta savedRicetta = this.ricettaService.getRicettaById(id);
 
         if (!(principal instanceof User currentUser)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non autorizzato.");
         }
+
+        User author = savedRicetta.getAuthor();
+
+        if (!author.equals(currentUser) && !(currentUser.getRoleList().get(0).getId() == 2)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Utente non autorizzato a modificare questa ricetta.");
+        }
+
         try {
-            Ricetta savedRicetta = this.ricettaService.getRicettaById(id);
             String title = requestBody.get("title").asText();
             String description = requestBody.get("description").asText();
             Long userId = requestBody.get("authorId").asLong();

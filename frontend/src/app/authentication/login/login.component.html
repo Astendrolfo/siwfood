@@ -1,7 +1,7 @@
 <section class="vh-100" style="background-color: #fff3cf;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-xl-10">
+      <div class="col col-xl-10 animate__animated animate__fadeIn">
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
             <div class="col-md-6 col-lg-5 d-none d-md-block">
@@ -14,40 +14,40 @@
                     <span class="h1 fw-bold mb-0">SiwFood</span>
                   </div>
 
-                  <h5 class="fw-normal">Accedi al tuo account</h5>
+                  <h5 class="fw-normal animate__animated animate__fadeIn">Accedi al tuo account</h5>
                   <div class="space"></div>
-                  <div class="form-outline">
+                  <div class="form-outline animate__animated animate__fadeIn">
                     <label class="form-label" for="inputEmail">
-                      <i class="bi bi-envelope-fill"></i>Indirizzo E-mail
+                      <i class="bi bi-envelope-fill"></i> Indirizzo E-mail
                     </label>
-                    <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="username" name="email" placeholder="E-mail" autofocus=""/>
+                    <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="username" name="email" placeholder="E-mail" autofocus="">
                   </div>
-                  <div class="form-outline">
+                  <div class="form-outline animate__animated animate__fadeIn">
                     <label class="form-label" for="inputPassword">
-                      <i class="bi bi-lock-fill"></i>Password
+                      <i class="bi bi-lock-fill"></i> Password
                     </label>
-                    <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="password" name="password" placeholder="Password" required=""/>
+                    <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="password" name="password" placeholder="Password" required="">
                   </div>
                   <div class="space"></div>
                   <div class="form-actions">
-                    <div class="links">
+                    <div class="links animate__animated animate__fadeIn">
                       <p class="mb-0" style="color: #393f81;">Non hai un account? <a href="register" style="color: #393f81;">Registrati qui</a></p>
                     </div>
                   </div>
                   <div class="space"></div>
-                  <div class="pt-1 mb-4">
-                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button" (click)="login()">Accedi</button>
+                  <div class="pt-1 mb-4 animate__animated animate__fadeIn">
+                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button" [disabled]="success" (click)="login()">Accedi</button>
                   </div>
 
                 </form>
 
-                <div *ngIf="success && requested"class="alert alert-success d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': success && requested}">
+                <div *ngIf="success && requested" class="alert alert-success d-flex align-items-center animate__animated animate__fadeIn" role="alert">
                   <div>
                     <i class="bi bi-check-circle"></i> &nbsp; Login effettuato con successo! :)
                   </div>
                 </div>
 
-                <div *ngIf="!success && requested && errorMessage" class="alert alert-danger d-flex align-items-center" role="alert" [ngClass]="{'animate__animated animate__fadeIn': !success && requested}">
+                <div *ngIf="!success && requested && errorMessage" class="alert alert-danger d-flex align-items-center animate__animated animate__fadeIn" role="alert">
                   <div>
                     <i class="bi bi-exclamation-circle"></i> &nbsp; {{ errorMessage }}
                   </div>

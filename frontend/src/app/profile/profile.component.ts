@@ -5,6 +5,8 @@ import {FormsModule} from "@angular/forms";
 import {UserService} from "../services/user.service";
 import {ImageService} from "../services/image.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AuthService} from "../services/auth.service";
+import {ActivatedRoute, Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -28,12 +30,21 @@ export class ProfileComponent implements OnInit {
   preview: any;
   selectedFile: any;
 
-  constructor(private http: HttpClient, private userService: UserService, private imageService: ImageService, private sanitizer: DomSanitizer) { }
+  constructor(private router : Router, private route: ActivatedRoute, private authService: AuthService, private http: HttpClient, private userService: UserService, private imageService: ImageService, private sanitizer: DomSanitizer) { }
 
   editing = false;
 
   modifica() {
     this.editing = true;
+  }
+
+  isOwner(): boolean {
+    const currentUserId = this.authService.getUserId();
+    return this.userInfo?.id === currentUserId;
+  }
+
+  isAdmin(): boolean {
+    return (this.authService.getRole() === 'admin');
   }
 
   salva() {
@@ -63,12 +74,29 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     if (typeof window !== "undefined") {
-      this.fetchUserInfo();
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam !== null && idParam !== undefined) {
+        const id = +idParam;
+        if (!isNaN(id)) {
+          this.fetchUserInfo(id);
+        } else {
+          console.error('L\'ID non è un numero valido');
+        }
+      } else {
+        const idMyself = this.authService.getUserId();
+        if (idMyself !== null && idMyself !== undefined) {
+          const id = +idMyself;
+          if (!isNaN(id)) {
+            this.fetchUserInfo(id);
+          }
+        }
+      }
+      this.isOwner();
     }
   }
 
-  fetchUserInfo(): void {
-    this.userService.getMyself().subscribe(
+  fetchUserInfo(userId : number): void {
+    this.userService.getUserById(userId).subscribe(
       response => {
         this.userInfo.id = response.id;
         this.userInfo.email = response.email;
@@ -102,6 +130,11 @@ export class ProfileComponent implements OnInit {
       }
     }
     }
+  }
+
+  eliminaProfilo(){
+    this.userService.deleteUserById(this.userInfo.id).subscribe();
+    this.router.navigate(['login']).then();
   }
 
 }

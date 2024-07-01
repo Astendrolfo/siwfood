@@ -1,28 +1,68 @@
-<section class="vh-1000" style="background-color: #fff3cf;">
-<div class="container">
-  <div class="space"></div>
-  <h1 figure class="text-center">Ricette di SiwFood</h1>
-  <h5 figure class="text-center">un mondo culinario tutto da scoprire</h5>
-  <div class="space"></div>
-  <div class="card-list">
-    <div class="card" *ngFor="let ricetta of ricette">
-      <div class="card-header">
-        Autore: {{ ricetta.authorName }}
-      </div>
-      <div class="card-body">
-        <h5 class="card-title text-center">{{ ricetta.title }}</h5>
-        <div class="space"></div>
-        <div class="image-container">
-          <img *ngIf="ricetta.immagineUrl"
-               [src]="ricetta.immagineUrl"
-               alt="Immagine ricetta"
-               class="card-image" loading="eager">
-          <div class="space"></div>
-          <a href="/ricette/{{ricetta.id}}" class="btn btn-primary btn-view-recipe">Vedi ricetta</a>
-        </div>
-
-      </div>
+<section class="background d-flex align-items-center justify-content-center" style="background-color: #fff3cf; min-height: 100vh;">  <div class="container py-5 d-flex flex-column align-items-center justify-content-center">
+    <div class="text-center mb-4">
+      <h1 class="display-4 animate__animated animate__fadeInDown">Ricette di SiwFood</h1>
+      <h5 class="animate__animated animate__fadeInUp">Un mondo culinario tutto da scoprire</h5>
     </div>
+    <div class="row align-items-center justify-content-center">
+      <!-- Utilizzo di ng-container per controllare la presenza di ricette -->
+      <ng-container *ngIf="ricette && ricette.length > 0">
+        <!-- Prima ricetta -->
+        <div class="col-12 col-md-6 col-lg-4 mb-4 animate__animated animate__fadeInUp d-flex justify-content-center">
+          <div class="card h-100">
+            <div class="card-header">
+              <i class="bi bi-person"></i> Autore: {{ ricette[0]?.authorName }}
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-center">{{ ricette[0]?.title }}</h5>
+              <div class="mb-3 text-center">
+                <img *ngIf="ricette[0]?.immagineUrl" [src]="ricette[0]?.immagineUrl" alt="Immagine ricetta"
+                     class="img-fluid card-image mb-3 rounded">
+                <div *ngIf="!ricette[0]?.immagineUrl" class="img-placeholder mb-3 rounded"></div>
+              </div>
+              <a href="/ricette/{{ricette[0]?.id}}" class="btn btn-primary mt-auto align-self-center rounded-pill">
+                <i class="bi bi-eye"></i> Vedi ricetta
+              </a>
+              <a href="/cuochi/{{ ricette[0]?.authorId }}"
+                 class="btn btn-outline-secondary btn-sm mt-2 align-self-center rounded-pill">
+                <i class="bi bi-person-circle"></i> Profilo cuoco
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Altri elementi della griglia di card per le altre ricette -->
+        <div *ngFor="let ricetta of ricette.slice(1)" class="col-12 col-md-6 col-lg-4 mb-4 animate__animated animate__fadeInUp">
+          <div class="card h-100">
+            <div class="card-header">
+              <i class="bi bi-person"></i> Autore: {{ ricetta.authorName }}
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-center">{{ ricetta.title }}</h5>
+              <div class="mb-3 text-center">
+                <img *ngIf="ricetta.immagineUrl" [src]="ricetta.immagineUrl" alt="Immagine ricetta"
+                     class="img-fluid card-image mb-3 rounded">
+                <div *ngIf="!ricetta.immagineUrl" class="img-placeholder mb-3 rounded"></div>
+              </div>
+              <a href="/ricette/{{ricetta.id}}" class="btn btn-primary mt-auto align-self-center rounded-pill">
+                <i class="bi bi-eye"></i> Vedi ricetta
+              </a>
+              <a href="/cuochi/{{ ricetta.authorId }}"
+                 class="btn btn-outline-secondary btn-sm mt-2 align-self-center rounded-pill">
+                <i class="bi bi-person-circle"></i> Profilo cuoco
+              </a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- Messaggio di caricamento o nessuna ricetta trovata -->
+      <ng-container *ngIf="!ricette || ricette.length === 0">
+        <div class="col-12 text-center">
+          <p class="animate__animated animate__fadeIn">Nessuna ricetta disponibile al momento.</p>
+        </div>
+      </ng-container>
+    </div>
+    <!-- Pulsante per visualizzare tutti i cuochi -->
+    <a href="/cuochi" class="btn btn-primary mt-4 rounded-pill animate__animated animate__fadeInUp">
+      <i class="bi bi-people"></i> Visualizza tutti i cuochi
+    </a>
   </div>
-</div>
 </section>

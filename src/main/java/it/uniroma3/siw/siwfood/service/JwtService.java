@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwfood.service;
 
 import io.jsonwebtoken.Jwts;
+import it.uniroma3.siw.siwfood.exceptions.TokenExpiredException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,7 +64,13 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        if (!username.equals(userDetails.getUsername())) {
+            throw new IllegalArgumentException("Username non corrisponde");
+        }
+        if (isTokenExpired(token)) {
+            throw new TokenExpiredException("Il token è scaduto");
+        }
+        return true;
     }
 
     private boolean isTokenExpired(String token) {

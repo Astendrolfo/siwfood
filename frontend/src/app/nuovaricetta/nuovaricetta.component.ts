@@ -4,6 +4,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {RicettaService} from "../services/ricetta.service";
+import {Router, RouterModule} from "@angular/router";
 
 @Component({
   selector: 'app-nuovaricetta',
@@ -35,8 +36,9 @@ export class NuovaricettaComponent {
   file1 : any;
   file2 : any;
   file3 : any;
+  successMessage: string = 'La ricetta è stata salvata con successo :)';
 
-  constructor(private ricettaService: RicettaService, protected authService: AuthService) {}
+  constructor(private router: Router ,private ricettaService: RicettaService, protected authService: AuthService) {}
 
   onImageSelected(event: any, index: number): void {
     const fileList: FileList = event.target.files;
@@ -73,18 +75,8 @@ export class NuovaricettaComponent {
 
   submitForm() {
     this.formSubmitted = true;
-    if (this.formIsValid()) {
-      this.ricettaService.uploadRicetta(this.ricetta, this.file1, this.file2, this.file3);
-    }
-  }
-
-  formIsValid() :boolean {
-    return this.ricetta.title.trim() !== '' &&
-      this.ricetta.description.trim() !== '' &&
-      this.ricetta.listaIngredienti.every(ingrediente =>
-        ingrediente.nome.trim() !== '' &&
-        ingrediente.quantita !== null &&
-        ingrediente.tipoQuantita !== '');
+    this.ricettaService.uploadRicetta(this.ricetta, this.file1, this.file2, this.file3);
+    setTimeout(() => {this.router.navigate(['/']).then();}, 2000);
   }
 }
 

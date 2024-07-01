@@ -10,6 +10,7 @@ import {RicetteComponent} from "./ricette/ricette.component";
 import {NuovaricettaComponent} from "./nuovaricetta/nuovaricetta.component";
 import {MyrecipesComponent} from "./myrecipes/myrecipes.component";
 import {RicettadetailComponent} from "./ricettadetail/ricettadetail.component";
+import {ListacuochiComponent} from "./listacuochi/listacuochi.component";
 
 const routeConfig: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [canActivate]},
@@ -22,6 +23,8 @@ const routeConfig: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [canActivate]},
   { path: 'myrecipes', component: MyrecipesComponent, canActivate: [canActivate]},
   { path: 'ricette/:id', component: RicettadetailComponent, canActivate: [canActivate]},
+  { path: 'cuochi', component: ListacuochiComponent, canActivate: [canActivate]},
+  { path: 'cuochi/:id', component: ProfileComponent, canActivate: [canActivate]},
 ];
 
 export default routeConfig;

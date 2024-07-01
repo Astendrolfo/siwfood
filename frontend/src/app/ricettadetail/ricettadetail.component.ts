@@ -6,7 +6,6 @@ import { Ricetta } from '../models/ricetta.model';
 import {ImageLoaderService} from "../services/image.loader.service";
 import {FormsModule, NgForm} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
-import {HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-ricettadetail',
@@ -37,7 +36,7 @@ export class RicettadetailComponent implements OnInit{
   editMode = false;
   formSubmitted : boolean = false;
   success: boolean = false;
-  tipiQuantita: string[] = ['Grammi', 'Chilogrammi', 'Litri', 'Millilitri', 'Cucchiai', ' '];
+  tipiQuantita: string[] = ['grammi', 'kg', 'litri', 'ml', 'cucchiai', ' '];
   imagePreview: string | ArrayBuffer | null = null;
   file1 : any;
   file2 : any;
@@ -47,9 +46,9 @@ export class RicettadetailComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private ricettaService: RicettaService,
-    private location: Location,
     private imageLoaderService : ImageLoaderService,
-    private authService : AuthService
+    private authService : AuthService,
+    private router: Router
   ) {}
 
 
@@ -77,9 +76,9 @@ export class RicettadetailComponent implements OnInit{
         (data) => {
           this.ricetta = {
             ...data,
-            immagineUrl: this.loadImage(data.immagine1),
-            immagineUrl2: this.loadImage(data.immagine2),
-            immagineUrl3: this.loadImage(data.immagine3)
+            immagineUrl: data.immagine1 ? this.loadImage(data.immagine1) : '',
+            immagineUrl2: data.immagine2 ? this.loadImage(data.immagine2) : '',
+            immagineUrl3: data.immagine3 ? this.loadImage(data.immagine3) : ''
           };
 
           this.ricettaModificata = { ...this.ricetta };
@@ -99,16 +98,15 @@ export class RicettadetailComponent implements OnInit{
   }
 
   isAuthor(): boolean {
-    // Verifica se l'utente corrente è l'autore della ricetta
-    // Implementa la tua logica qui, ad esempio controllando l'id dell'autore
-    const currentUserId = 1; // Sostituisci con l'id dell'utente corrente autenticato
-    return this.ricetta?.authorId === currentUserId;
+    const currentUserId = this.authService.getUserId();
+    return (this.ricetta?.authorId === currentUserId || (this.authService.getRole() === 'admin'));
   }
 
   saveChanges(): void {
     console.log('Modifiche salvate:', this.ricetta);
     this.editMode = false;
     this.ricettaService.modifyRicetta(this.ricettaModificata, this.file1, this.file2, this.file3);
+    this.ngOnInit();
   }
 
   cancelEdit(): void {
@@ -164,5 +162,12 @@ export class RicettadetailComponent implements OnInit{
       this.ricettaModificata[property] = e.target.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  eliminaRicetta(): void {
+    const id = this.ricetta.id;
+    if (id != null)
+    this.ricettaService.deleteRicetta(id).subscribe();
+    this.router.navigate(['/']);
   }
 }

@@ -6,8 +6,9 @@ import it.uniroma3.siw.siwfood.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -36,7 +37,19 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public void deleteById(Long id) {
+        User user = repository.findById(id).orElse(null);
+        if (user == null) {
+            throw new AuthException("Utente non trovato con id: " + id, HttpStatus.NOT_FOUND);
+        }
+        repository.deleteById(id);
+    }
+
     public void registerUser(User user) {
         repository.save(user);
+    }
+
+    public List<User> getAllUsers(){
+        return (List<User>) repository.findAll();
     }
 }

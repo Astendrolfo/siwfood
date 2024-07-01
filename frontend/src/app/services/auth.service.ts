@@ -11,6 +11,7 @@ export class AuthService {
   private isAuthenticated: boolean = false;
   private username: string | null = null;
   private userId: number | null = null;
+  private role: string | null = null;
   private loginUrl = 'http://localhost:8080/api/login';
 
   constructor(private http: HttpClient) { }
@@ -30,8 +31,9 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
-    localStorage.removeItem('userid');
+    localStorage.removeItem('userId');
     localStorage.removeItem('username ');
+    localStorage.removeItem('role ');
     this.isAuthenticated = false;
   }
 
@@ -50,12 +52,15 @@ export class AuthService {
   getUserId(): number | null {
     if (typeof window !== 'undefined') {
       const userIdStr = localStorage.getItem('userId');
-      this.userId = userIdStr ? +userIdStr : null; //casto a numero
+      this.userId = userIdStr ? +userIdStr : null;
     } else {
       this.userId = null;
     }
     return this.userId;
   }
 
-
+  getRole(): string | null {
+    this.role = typeof window !== 'undefined' ? localStorage.getItem('role') : null
+    return this.role;
+  }
 }

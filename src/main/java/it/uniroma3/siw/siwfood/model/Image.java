@@ -22,6 +22,9 @@ public class Image {
     @JoinColumn(name = "ricetta_id")
     private Ricetta ricetta;
 
+    @Column(name = "images_order")
+    private int imageOrder;
+
     /* Getter and setters */
 
     public Long getId() {
@@ -56,6 +59,15 @@ public class Image {
     public void setRicetta(Ricetta ricetta) {
         this.ricetta = ricetta;
     }
+
+    public int getImageOrder() {
+        return imageOrder;
+    }
+
+    public void setImageOrder(int imageOrder) {
+        this.imageOrder = imageOrder;
+    }
+
 }
 
 

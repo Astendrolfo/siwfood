@@ -72,4 +72,32 @@ export class RicettaService {
         });
     }
   }
+
+  uploadRicetta(ricetta: Ricetta, image1: File, image2: File, image3: File) {
+    const url = 'http://localhost:8080/api/ricette/addricetta';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = JSON.stringify(ricetta);
+
+    this.http.post(url, body, { headers })
+      .subscribe({
+        next: (response: any) => {
+          console.log('Dati inviati con successo!');
+          const idRicetta = response.id;
+          if (idRicetta) {
+            if (image1) {
+              this.imageService.uploadImageForRecipeWithIndex(idRicetta, image1,0).subscribe();
+            }
+            if (image2) {
+              this.imageService.uploadImageForRecipeWithIndex(idRicetta, image2,1).subscribe();
+            }
+            if (image3){
+              this.imageService.uploadImageForRecipeWithIndex(idRicetta, image3,2).subscribe();
+            }
+          }
+        },
+        error: (error) => {
+          console.error('Errore durante l\'invio dei dati:', error);
+        }
+      });
+  }
 }

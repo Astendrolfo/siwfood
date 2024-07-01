@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,27 +76,37 @@ public class ImageService {
     }
 
     public Image saveImageForRicetta(MultipartFile file, Long ricettaId, int index) throws IOException {
-        Ricetta ricetta = ricettaRepository.findById(ricettaId)
-                .orElseThrow(() -> new RuntimeException("RicettaModel not found"));
+        Ricetta ricetta = ricettaRepository.findById(ricettaId).orElseThrow(() -> new RuntimeException("RicettaModel not found"));
 
-        if (index >= 0 && index < ricetta.getImages().size()) {
-            Image image = ricetta.getImages().get(index);
+        Image image;
+
+        if (ricetta.getImages().get(index) != null) {
+            image = ricetta.getImages().get(index);
             System.out.println("SOSTITUISCO IMMAGINE " + image.getId());
             image.setData(file.getBytes());
-            // Aggiornamento della relazione bidirezionale
             image.setRicetta(ricetta);
-            return imageRepository.save(image);
         } else {
             System.out.println("IMMAGINE NUOVA");
-            Image newImage = new Image();
-            newImage.setData(file.getBytes());
-            // Aggiornamento della relazione bidirezionale
-            newImage.setRicetta(ricetta);
-            ricetta.addImage(newImage);
-            ricettaRepository.save(ricetta);
-            return newImage;
+            image = new Image();
+            image.setData(file.getBytes());
+            image.setRicetta(ricetta);
+            ricetta.getImages().set(index, image);
+            imageRepository.save(image);
         }
+
+        List<Image> images = ricetta.getImages();
+        for (int i = 0; i < images.size(); i++) {
+            if (images.get(i) != null) {
+                images.get(i).setImageOrder(i);
+            }
+        }
+
+        ricettaRepository.save(ricetta);
+        return image;
     }
+
+
+
 
     public void deleteImage(Long id) {
         imageRepository.deleteById(id);

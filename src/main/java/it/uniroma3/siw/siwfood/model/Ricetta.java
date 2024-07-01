@@ -3,10 +3,7 @@ package it.uniroma3.siw.siwfood.model;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @EnableAutoConfiguration
 @Entity
@@ -30,11 +27,20 @@ public class Ricetta {
 
     @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL)
     @OrderColumn
-    private List<Image> images = new ArrayList<>();
+    private List<Image> images;
 
     public Ricetta() {
         this.listaIngredienti = new ArrayList<>();
         this.images = new ArrayList<>();
+        Image image1 = new Image();
+        Image image2 = new Image();
+        Image image3 = new Image();
+        image1.setRicetta(this);
+        image2.setRicetta(this);
+        image3.setRicetta(this);
+        this.images.add(image1);
+        this.images.add(image2);
+        this.images.add(image3);
     }
 
     public Long getId() {

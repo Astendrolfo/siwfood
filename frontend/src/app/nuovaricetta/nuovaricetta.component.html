@@ -5,38 +5,60 @@
       <i class="bi bi-check-lg"></i> Aggiungi una nuova ricetta
     </div>
     <div class="card-body">
+      <form #form="ngForm">
       <div class="form-group">
         <label for="titolo" >Titolo</label>
         <div class="space"></div>
-        <input type="text" class="form-control" id="titolo" placeholder="Inserisci il titolo della tua ricetta" [(ngModel)]="ricetta.title" required>
+        <input type="text" class="form-control" id="titolo" placeholder="Inserisci il titolo della tua ricetta" [(ngModel)]="ricetta.title" name="title" required>
         <div class="space"></div>
 
-        <label for="descrizione">Breve descrizione</label>
+        <label for="description">Descrizione (max 500 caratteri)</label>
         <div class="space"></div>
-        <textarea class="form-control" id="descrizione" placeholder="Inserisci una breve descrizione della tua ricetta" [(ngModel)]="ricetta.description" (input)="limitCharacters($event)" required></textarea>
+        <textarea class="form-control" id="description" rows="3" [(ngModel)]="ricetta.description" name="description" maxlength="499" required></textarea>
         <div class="space"></div>
-        <div *ngIf="charLimitExceeded" class="alert alert-warning">
-          <i class="bi bi-exclamation-triangle"></i> La descrizione non può superare i 100 caratteri.
+        <div *ngIf="form.controls['description']?.invalid && (form.controls['description'].dirty || form.controls['description'].touched)" class="alert alert-warning">
+          <i class="bi bi-exclamation-triangle"></i> La descrizione è obbligatoria e deve essere inferiore a 500 caratteri.
         </div>
         <div class="space"></div>
-        <label for="immagine">Carica immagine</label>
+        <label for="image">Carica Copertina</label>
         <div class="space"></div>
-        <input type="file" class="form-control" id="immagine" (change)="onImageSelected($event)">
+        <input type="file" class="form-control" id="image" (change)="onImageSelected($event,1)">
+        <div class="image-preview-container" *ngIf="ricetta.immagineUrl">
+          <img [src]="ricetta.immagineUrl" alt="Anteprima Immagine" class="img-thumbnail">
+        </div>
+
         <div class="space mb-3"></div>
-        <div class="image-preview-container" *ngIf="imageUrl">
-          <img [src]="imageUrl" alt="Anteprima Immagine" class="img-thumbnail">
+
+        <div class="space"></div>
+        <label for="image2">Carica immagine</label>
+        <div class="space"></div>
+        <input type="file" class="form-control" id="image2" (change)="onImageSelected($event, 2)">
+        <div class="image-preview-container" *ngIf="ricetta.immagineUrl2">
+          <img [src]="ricetta.immagineUrl2" alt="Anteprima Immagine" class="img-thumbnail">
         </div>
+        <div class="space mb-3"></div>
+
+        <div class="space"></div>
+        <label for="image3">Carica immagine</label>
+        <div class="space"></div>
+        <input type="file" class="form-control" id="image3" (change)="onImageSelected($event, 3)">
+        <div class="image-preview-container" *ngIf="ricetta.immagineUrl3">
+          <img [src]="ricetta.immagineUrl3" alt="Anteprima Immagine" class="img-thumbnail">
+        </div>
+        <div class="space mb-3"></div>
+
+
 
         <!-- Lista dinamica degli ingredienti -->
         <div *ngFor="let ingrediente of ricetta.listaIngredienti; let i = index">
           <div class="row mb-3">
             <div class="col">
-              <input type="text" class="form-control" [(ngModel)]="ingrediente.nome" placeholder="Nome dell'ingrediente" required>
+              <input type="text" class="form-control" [(ngModel)]="ingrediente.nome" placeholder="Nome dell'ingrediente" name="nomeingrediente" required>
             </div>
             <div class="col">
               <div class="input-group">
-                <input type="number" class="form-control" [(ngModel)]="ingrediente.quantita" placeholder="Quantità" min="0" required>
-                <select class="form-control bg-light" [(ngModel)]="ingrediente.tipoQuantita">
+                <input type="number" class="form-control" [(ngModel)]="ingrediente.quantita" placeholder="Quantità" min="0" name="quantitaingrediente" required>
+                <select class="form-control bg-light" [(ngModel)]="ingrediente.tipoQuantita" name="tipoquantitaingrediente">
                   <option value="grammi">Grammi</option>
                   <option value="chilogrammi">Chilogrammi</option>
                   <option value="litri">Litri</option>
@@ -67,7 +89,7 @@
       <div class="alert alert-success" role="alert" *ngIf="success">
         <i class="bi bi-check-circle"></i> La ricetta è stata salvata con successo.
       </div>
-
+      </form>
       <div class="space"></div>
       </div>
   </div>

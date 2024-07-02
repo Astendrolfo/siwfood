@@ -1,10 +1,15 @@
-<section class="background" style="background-color: #fff3cf;">
+<section class="background d-flex align-items-center justify-content-center" style="background-color: #fff3cf; min-height: 100vh;">
   <div class="container">
     <div class="space"></div>
     <div class="text-center mb-4">
-      <h1 class="display-4 animate__animated animate__fadeInDown">Le tue ricette SiwFood</h1>
-      <h5 class="animate__animated animate__fadeInUp">Un mondo culinario tutto da scoprire</h5>
+      <h1 class="display-4 animate__animated animate__fadeInDown">
+        <i class="bi bi-egg-fried text-warning"></i> Le tue ricette SiwFood <i class="bi bi-egg-fried text-warning"></i>
+      </h1>
+      <h5 class="animate__animated animate__fadeInUp text-muted">
+        <i class="bi bi-journal-bookmark"></i> Un mondo culinario tutto da scoprire
+      </h5>
     </div>
+
     <div class="space"></div>
     <div class="card-list">
       <div class="card" *ngFor="let ricetta of ricette">

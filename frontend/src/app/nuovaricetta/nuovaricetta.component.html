@@ -1,60 +1,57 @@
-<section class="background" style="background-color: #fff3cf;">
-<div class="container">
-  <div class="card">
-    <div class="card-header">
-      <i class="bi bi-check-lg"></i> Aggiungi una nuova ricetta
-    </div>
-    <div class="card-body">
-      <form #form="ngForm" (ngSubmit)="submitForm()" novalidate>
-        <div class="form-group">
-          <label for="titolo">Titolo</label>
-          <div class="space"></div>
-          <input type="text" class="form-control" id="titolo" placeholder="Inserisci il titolo della tua ricetta"
-                 [(ngModel)]="ricetta.title" name="title" required #title="ngModel">
-          <div class="space"></div>
-          <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-warning">
-            <i class="bi bi-exclamation-triangle"></i> Il titolo è obbligatorio.
+<section class="background py-5" style="background-color: #fff3cf;">
+  <div class="container">
+    <div class="card shadow-lg animate__animated animate__fadeIn">
+      <div class="card-header bg-primary text-white">
+        <i class="bi bi-check-lg"></i> Aggiungi una nuova ricetta
+      </div>
+      <div class="card-body">
+        <form #form="ngForm" (ngSubmit)="submitForm()" novalidate>
+          <div class="form-group mb-3">
+            <label for="titolo" class="form-label"><i class="bi bi-pencil-square"></i> Titolo</label>
+            <input type="text" class="form-control rounded-pill" id="titolo" placeholder="Inserisci il titolo della tua ricetta"
+                   [(ngModel)]="ricetta.title" name="title" required #title="ngModel">
+            <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-warning mt-2">
+              <i class="bi bi-exclamation-triangle"></i> Il titolo è obbligatorio.
+            </div>
           </div>
 
-          <label for="description">Descrizione (max 500 caratteri)</label>
-          <div class="space"></div>
-          <textarea class="form-control" id="description" rows="3" [(ngModel)]="ricetta.description" name="description" maxlength="499" required #description="ngModel"></textarea>
-          <div class="space"></div>
-          <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-warning">
-            <i class="bi bi-exclamation-triangle"></i> La descrizione è obbligatoria e deve essere inferiore a 500 caratteri.
+          <div class="form-group mb-3">
+            <label for="description" class="form-label"><i class="bi bi-card-text"></i> Descrizione (max 500 caratteri)</label>
+            <textarea class="form-control" id="description" rows="3" [(ngModel)]="ricetta.description" name="description" maxlength="499" required #description="ngModel"></textarea>
+            <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-warning mt-2">
+              <i class="bi bi-exclamation-triangle"></i> La descrizione è obbligatoria e deve essere inferiore a 500 caratteri.
+            </div>
           </div>
 
-          <div class="space"></div>
-          <label for="image">Carica Copertina</label>
-          <div class="space"></div>
-          <input type="file" class="form-control" id="image" (change)="onImageSelected($event,1)">
-          <div class="space"></div>
-          <div class="image-preview-container" *ngIf="ricetta.immagineUrl">
-            <img [src]="ricetta.immagineUrl" alt="Anteprima Immagine" class="img-thumbnail">
+          <div class="form-group mb-3">
+            <label for="image" class="form-label"><i class="bi bi-image"></i> Carica Copertina</label>
+            <input type="file" class="form-control rounded-pill" id="image" (change)="onImageSelected($event,1)">
+            <div class="image-preview-container mt-3" *ngIf="ricetta.immagineUrl">
+              <img [src]="ricetta.immagineUrl" alt="Anteprima Immagine" class="img-thumbnail">
+            </div>
           </div>
 
-          <label for="image2">Carica immagine</label>
-          <div class="space"></div>
-          <input type="file" class="form-control" id="image2" (change)="onImageSelected($event, 2)">
-          <div class="space"></div>
-          <div class="image-preview-container" *ngIf="ricetta.immagineUrl2">
-            <img [src]="ricetta.immagineUrl2" alt="Anteprima Immagine" class="img-thumbnail">
+          <div class="form-group mb-3">
+            <label for="image2" class="form-label"><i class="bi bi-image"></i> Carica immagine</label>
+            <input type="file" class="form-control rounded-pill" id="image2" (change)="onImageSelected($event, 2)">
+            <div class="image-preview-container mt-3" *ngIf="ricetta.immagineUrl2">
+              <img [src]="ricetta.immagineUrl2" alt="Anteprima Immagine" class="img-thumbnail">
+            </div>
           </div>
 
-          <label for="image3">Carica immagine</label>
-          <div class="space"></div>
-          <input type="file" class="form-control" id="image3" (change)="onImageSelected($event, 3)">
-          <div class="space"></div>
-          <div class="image-preview-container" *ngIf="ricetta.immagineUrl3">
-            <img [src]="ricetta.immagineUrl3" alt="Anteprima Immagine" class="img-thumbnail">
+          <div class="form-group mb-3">
+            <label for="image3" class="form-label"><i class="bi bi-image"></i> Carica immagine</label>
+            <input type="file" class="form-control rounded-pill" id="image3" (change)="onImageSelected($event, 3)">
+            <div class="image-preview-container mt-3" *ngIf="ricetta.immagineUrl3">
+              <img [src]="ricetta.immagineUrl3" alt="Anteprima Immagine" class="img-thumbnail">
+            </div>
           </div>
 
-          <div class="space mb-3"></div>
-          <!-- Lista dinamica degli ingredienti -->
-          <div *ngFor="let ingrediente of ricetta.listaIngredienti; let i = index">
-            <div class="row mb-3">
+          <div class="mb-3">
+            <h5><i class="bi bi-list-ul"></i> Ingredienti</h5>
+            <div *ngFor="let ingrediente of ricetta.listaIngredienti; let i = index" class="row align-items-center mb-3">
               <div class="col">
-                <input type="text" class="form-control" [(ngModel)]="ingrediente.nome" placeholder="Nome dell'ingrediente" name="nomeingrediente" required>
+                <input type="text" class="form-control rounded-pill" [(ngModel)]="ingrediente.nome" placeholder="Nome dell'ingrediente" name="nomeingrediente" required>
               </div>
               <div class="col">
                 <div class="input-group">
@@ -70,27 +67,24 @@
                 </div>
               </div>
               <div class="col-auto">
-                <button type="button" class="btn btn-danger" (click)="rimuoviIngrediente(i)">Rimuovi</button>
+                <button type="button" class="btn btn-danger rounded-pill" (click)="rimuoviIngrediente(i)"><i class="bi bi-trash"></i> Rimuovi</button>
               </div>
             </div>
           </div>
 
-          <!-- Pulsante per aggiungere un nuovo ingrediente -->
           <div class="mb-3">
-            <button type="button" class="btn btn-primary" (click)="aggiungiIngrediente()">Aggiungi Ingrediente</button>
+            <button type="button" class="btn btn-primary rounded-pill" (click)="aggiungiIngrediente()"><i class="bi bi-plus-lg"></i> Aggiungi Ingrediente</button>
           </div>
 
-          <!-- Pulsante Salva posizionato sulla destra -->
-          <div class="d-flex justify-content-end mb-3">
-            <button type="submit" class="btn btn-success" [disabled]="!form.valid || formSubmitted">Salva Ricetta</button>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success rounded-pill" [disabled]="!form.valid || formSubmitted"><i class="bi bi-save"></i> Salva Ricetta</button>
           </div>
-          <div class="alert alert-success" *ngIf="formSubmitted">
+
+          <div class="alert alert-success mt-3" *ngIf="formSubmitted">
             {{ successMessage }}
           </div>
-        </div>
-      </form>
-      <div class="space"></div>
+        </form>
       </div>
+    </div>
   </div>
-</div>
 </section>

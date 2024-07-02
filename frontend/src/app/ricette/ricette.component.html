@@ -1,7 +1,12 @@
-<section class="background d-flex align-items-center justify-content-center" style="background-color: #fff3cf; min-height: 100vh;">  <div class="container py-5 d-flex flex-column align-items-center justify-content-center">
+<section class="background d-flex align-items-center justify-content-center" style="background-color: #fff3cf; min-height: 100vh;">
+  <div class="container py-5 d-flex flex-column align-items-center justify-content-center">
     <div class="text-center mb-4">
-      <h1 class="display-4 animate__animated animate__fadeInDown">Ricette di SiwFood</h1>
-      <h5 class="animate__animated animate__fadeInUp">Un mondo culinario tutto da scoprire</h5>
+      <h1 class="display-4 animate__animated animate__fadeInDown">
+        <i class="bi bi-egg-fried"></i> Le Delizie di SiwFood <i class="bi bi-egg-fried"></i>
+      </h1>
+      <h5 class="animate__animated animate__fadeInUp text-muted">
+        scopri nuovi sapori e ricette uniche
+      </h5>
     </div>
     <div class="row align-items-center justify-content-center">
       <!-- Utilizzo di ng-container per controllare la presenza di ricette -->
@@ -10,19 +15,19 @@
         <div class="col-12 col-md-6 col-lg-4 mb-4 animate__animated animate__fadeInUp d-flex justify-content-center">
           <div class="card h-100">
             <div class="card-header">
-              <i class="bi bi-person"></i> Autore: {{ ricette[0]?.authorName }}
+              <i class="bi bi-person"></i> Autore: {{ ricette[0].authorName }}
             </div>
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title text-center">{{ ricette[0]?.title }}</h5>
+              <h5 class="card-title text-center">{{ ricette[0].title }}</h5>
               <div class="mb-3 text-center">
-                <img *ngIf="ricette[0]?.immagineUrl" [src]="ricette[0]?.immagineUrl" alt="Immagine ricetta"
+                <img *ngIf="ricette[0].immagineUrl" [src]="ricette[0].immagineUrl" alt="Immagine ricetta"
                      class="img-fluid card-image mb-3 rounded">
-                <div *ngIf="!ricette[0]?.immagineUrl" class="img-placeholder mb-3 rounded"></div>
+                <div *ngIf="!ricette[0].immagineUrl" class="img-placeholder mb-3 rounded"></div>
               </div>
-              <a href="/ricette/{{ricette[0]?.id}}" class="btn btn-primary mt-auto align-self-center rounded-pill">
+              <a href="/ricette/{{ricette[0].id}}" class="btn btn-primary mt-auto align-self-center rounded-pill">
                 <i class="bi bi-eye"></i> Vedi ricetta
               </a>
-              <a href="/cuochi/{{ ricette[0]?.authorId }}"
+              <a href="/cuochi/{{ ricette[0].authorId }}"
                  class="btn btn-outline-secondary btn-sm mt-2 align-self-center rounded-pill">
                 <i class="bi bi-person-circle"></i> Profilo cuoco
               </a>

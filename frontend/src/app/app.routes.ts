@@ -25,6 +25,7 @@ const routeConfig: Routes = [
   { path: 'ricette/:id', component: RicettadetailComponent, canActivate: [canActivate]},
   { path: 'cuochi', component: ListacuochiComponent, canActivate: [canActivate]},
   { path: 'cuochi/:id', component: ProfileComponent, canActivate: [canActivate]},
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 export default routeConfig;

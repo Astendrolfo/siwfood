@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ricetta} from "../models/ricetta.model";
 import {RicettaService} from "../services/ricetta.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";

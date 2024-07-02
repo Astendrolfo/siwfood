@@ -1,5 +1,9 @@
+<section class="background d-flex align-items-center justify-content-center" style="background-color: #fff3cf; min-height: 100vh;">
 <div *ngIf="userList && userList.length > 0" class="container">
-  <h2 class="mt-4 mb-3 text-center display-4">Lista Cuochi</h2>
+  <h2 class="mt-4 mb-3 text-center display-4 animate__animated animate__bounceIn">
+    <i class="bi bi-people-fill"></i> I nostri Cuochi
+  </h2>
+
   <div class="row">
     <div *ngFor="let user of userList" class="col-12 mb-3">
       <div class="card animate__animated animate__fadeInUp">
@@ -25,3 +29,4 @@
 <div *ngIf="userList && userList.length === 0" class="container">
   <p class="mt-4">Nessun utente trovato.</p>
 </div>
+</section>

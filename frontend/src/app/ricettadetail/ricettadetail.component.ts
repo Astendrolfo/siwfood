@@ -99,7 +99,7 @@ export class RicettadetailComponent implements OnInit{
 
   isAuthor(): boolean {
     const currentUserId = this.authService.getUserId();
-    return (this.ricetta?.authorId === currentUserId || (this.authService.getRole() === 'admin'));
+    return ((this.ricetta?.authorId === currentUserId && currentUserId != null) || (this.authService.getRole() === 'admin'));
   }
 
   saveChanges(): void {

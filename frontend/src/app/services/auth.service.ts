@@ -59,8 +59,18 @@ export class AuthService {
     return this.userId;
   }
 
+  updateUsername(username : string | null): void {
+    if (username) {
+      localStorage.setItem('username', username);
+    }
+    else
+      localStorage.removeItem('username');
+  }
+
   getRole(): string | null {
-    this.role = typeof window !== 'undefined' ? localStorage.getItem('role') : null
+    if (this.isAuthenticatedUser()) {
+      this.role = typeof window !== 'undefined' ? localStorage.getItem('role') : null
+    }
     return this.role;
   }
 }

@@ -6,7 +6,8 @@ import {UserService} from "../services/user.service";
 import {ImageService} from "../services/image.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AuthService} from "../services/auth.service";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AppComponent} from "../app.component";
 
 @Component({
   selector: 'app-profile',
@@ -30,7 +31,7 @@ export class ProfileComponent implements OnInit {
   preview: any;
   selectedFile: any;
 
-  constructor(private router : Router, private route: ActivatedRoute, private authService: AuthService, private http: HttpClient, private userService: UserService, private imageService: ImageService, private sanitizer: DomSanitizer) { }
+  constructor(private appComponent: AppComponent, private router : Router, private route: ActivatedRoute, private authService: AuthService, private http: HttpClient, private userService: UserService, private imageService: ImageService, private sanitizer: DomSanitizer) { }
 
   editing = false;
 
@@ -49,21 +50,16 @@ export class ProfileComponent implements OnInit {
 
   salva() {
     this.editing = false;
+    this.authService.updateUsername(this.userInfo.nome)
     this.http.post<any>('http://localhost:8080/api/users/modify/me', this.userInfo)
       .subscribe(
-        (response) => {
-          console.log('Modifiche salvate con successo:', response);
-        },
         (error) => {
           console.error('Errore durante il salvataggio delle modifiche:', error);
         }
       );
 
     if (this.selectedFile && this.userInfo.id) {
-      this.imageService.uploadImageForUser(this.userInfo.id, this.selectedFile)
-        .subscribe(response => {
-          console.log('Upload successful', response);
-        });
+      this.imageService.uploadImageForUser(this.userInfo.id, this.selectedFile).subscribe();
     }
   }
 
@@ -80,7 +76,7 @@ export class ProfileComponent implements OnInit {
         if (!isNaN(id)) {
           this.fetchUserInfo(id);
         } else {
-          console.error('L\'ID non è un numero valido');
+          this.router.navigate(['']).then();
         }
       } else {
         const idMyself = this.authService.getUserId();
@@ -106,6 +102,7 @@ export class ProfileComponent implements OnInit {
         this.fetchProfilePicture();
       },
       error => {
+        this.router.navigate(['']).then();
       }
     );
   }
